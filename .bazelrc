@@ -1,0 +1,27 @@
+
+# https://bazel.build/docs/user-manual
+
+####################### startup #####################
+#####################################################
+####################### common ######################
+common --enable_bzlmod
+#####################################################
+####################### test ########################
+# https://bazel.build/docs/user-manual#running-tests
+test --show_timestamps
+# test --test_output=all
+test --test_output=summary
+test --test_summary=detailed
+test --verbose_test_summary
+test --verbose_failures
+test --cache_test_results=no
+# test --spawn_strategy=local
+# test --flaky_test_attempts=2
+#####################################################
+####################### clean #######################
+clean --expunge
+clean --show_timestamps
+#####################################################
+####################### query #######################
+query --order_output=full
+#####################################################
