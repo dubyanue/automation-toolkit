@@ -13,7 +13,7 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):
         # "--cov-report=xml:$$TEST_UNDECLARED_OUTPUTS_DIR/coverage.xml",
         # "--cov-report=html:coverage_html",
         # "-s",
-        "-rfExP"
+        "-rfExP",
         # "--capture=no",
     ]
 
