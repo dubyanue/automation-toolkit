@@ -1,17 +1,20 @@
-
 # MODULE.bazel
 bazel_dep(name = "rules_python", version = "1.6.3")
-bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+bazel_dep(name = "rules_mypy", version = "0.40.0")
 
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
 git_override(
     module_name = "hedron_compile_commands",
-    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
     commit = "a14ad3a64e7bf398ab48105aaa0348e032ac87f8",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
 )
 
 # NOTE PYTHON
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
-python.toolchain(python_version = "3.12", is_default = True)
+python.toolchain(
+    is_default = True,
+    python_version = "3.12",
+)
 use_repo(python)
 
 # NOTE PIP REQUIREMENTS

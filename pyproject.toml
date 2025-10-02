@@ -1,6 +1,6 @@
 
 [tool.ruff]
-line-length = 79
+line-length = 88
 
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
@@ -44,6 +44,48 @@ select = [
     "PD",       # pandas-vet (PD)
     "N",        # pep8-naming (N)
     "PERF",     # Perflint (PERF)
-    "E"
-
+    "E",        # pycodestyle Error (E)
+    "W",        # pycodestyle Warning (W)
+    "F",        # Pyflakes (F)
+    "PL",       # Pylint (PL)
+    "UP",       # pyupgrade (UP)
+    "FURB",     # refurb (FURB)
+    "RUF",      # Ruff-specific rules (RUF)
+    "TRY",      # tryceratops (TRY)
 ]
+
+ignore = [
+    "COM812",   # Conflicts with formatter, missing-trailing-comma	Trailing comma missing
+    "D",        # pydocstyle (D) https://docs.astral.sh/ruff/rules/#pydocstyle-d
+]
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.pylint.MESS]

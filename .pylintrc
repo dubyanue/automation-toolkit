@@ -1,0 +1,26 @@
+[MESSAGES_CONTROL]
+disable=all
+# us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#Home:
+enable=too-many-instance-attributes,
+    too-few-public-methods,           # Classes that should be functions
+    consider-using-enumerate,         # Loop optimization suggestions
+    consider-using-dict-items,        # Dict iteration improvements
+    consider-using-with,              # Context manager suggestions
+    unnecessary-pass,
+    unnecessary-lambda,
+    eval-used,
+    comparison-with-callable,
+    too-many-ancestors,
+    raising-bad-type,
+    modified-iterating-dict,
+    modified-iterating-list,
+    try-except-raise,
+    no-else-return,
+    trailing-comma-tuple,
+    unreachable,                      # Dead code detection
+    inconsistent-return-statements,   # Return type consistency
+    useless-else-on-loop,            # Unnecessary else clauses
+    duplicate-key,
+
+    super-init-not-called,           # Parent constructor not called
+    non-parent-init-called,           # Wrong parent constructor called

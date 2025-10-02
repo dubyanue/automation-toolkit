@@ -18,6 +18,19 @@ repos:
       - id: check-merge-conflict
         verbose: true
 
+  - repo: local
+    hooks:
+      - id: buildifier
+        name: Format Bazel Files
+        entry: /usr/local/bin/buildifier
+        language: system
+        files: '\.(BUILD|MODULE|WORKSPACE|bzl)$'
+        args:
+          - "-mode=fix" # Automatically fix issues, or use "-mode=check" for just checking
+          - "-lint=fix"
+          - "-v"
+        verbose: true
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.13.2
@@ -29,6 +42,14 @@ repos:
         verbose: true
       - id: ruff-format
         types: [python]
+        verbose: true
+
+  -   repo: https://github.com/pre-commit/mirrors-pylint
+      rev: 'v3.0.0a5'
+      hooks:
+      - id: pylint
+        types: [python]
+        language: python
         verbose: true
 
   # # Python formatting with Black

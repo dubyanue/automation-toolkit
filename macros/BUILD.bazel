@@ -1,0 +1,11 @@
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["pytest_wrapper.py"])
+
+py_library(
+    name = "pytest_wrapper",
+    srcs = ["pytest_wrapper.py"]
+)
