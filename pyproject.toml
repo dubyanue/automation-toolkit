@@ -2,6 +2,11 @@
 [tool.ruff]
 line-length = 88
 
+include = [
+    "*.pyi",
+    "*.py"
+]
+
 exclude = [
     ".bzr",
     ".direnv",
