@@ -19,8 +19,8 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):
 
     py_test(
         name = name,
-        main = "//tools/build_defs:pytest_wrapper.py",
-        srcs = srcs + ["//tools/build_defs:pytest_wrapper.py"],
+        main = "//macros:pytest_wrapper.py",
+        srcs = srcs + ["//macros:pytest_wrapper.py"],
         deps = deps,
         data = data,
         args = common_args + args,  # Allows extra args if needed

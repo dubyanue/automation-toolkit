@@ -1,0 +1,32 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "misc_deps",
+    srcs = [],
+    deps = [
+        "@my_deps//beautifulsoup4",
+        "@my_deps//coverage",
+        "@my_deps//iniconfig",
+        "@my_deps//jinja2",
+        "@my_deps//markupsafe",
+        "@my_deps//packaging",
+        "@my_deps//pluggy",
+        "@my_deps//pygments",
+        "@my_deps//soupsieve",
+    ],
+)
+
+py_library(
+    name = "py_test_deps",
+    srcs = [],
+    deps = [
+        ":misc_deps",
+        "@my_deps//pytest",
+        "@my_deps//pytest_cov",
+        "@my_deps//pytest_html",
+        "@my_deps//pytest_html_merger",
+        "@my_deps//pytest_metadata",
+    ],
+)
