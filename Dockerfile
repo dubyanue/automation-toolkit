@@ -37,7 +37,8 @@ RUN apt-get install -y \
     vim \
     ca-certificates \
     gnupg \
-    python3-dev \
+    python3.11-dev \
+    python3.11-venv \
     libffi-dev \
     less \
     gfortran \

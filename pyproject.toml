@@ -208,3 +208,6 @@ enable = [
     "self-cls-assignment",                          # W0642
     "unbalanced-dict-unpacking",                    # W0644
 ]
+
+[tool.mypy]
+python_version = "3.11"
