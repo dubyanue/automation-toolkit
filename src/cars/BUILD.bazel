@@ -12,7 +12,7 @@ py_library(
         ],
     ),
     data = glob(
-        ["*.pyi"]
+        ["*.pyi"],
     ),
     deps = [],
 )
@@ -23,12 +23,12 @@ py_binary(
     main = "main.py",
     deps = [
         ":cars_lib",
+        "@my_deps//mypy",
+        "@my_deps//pandas",
+        "@my_deps//pydantic",
         "@my_deps//pylint",
         "@my_deps//python_dateutil",
         "@my_deps//pytz",
-        "@my_deps//mypy",
         "@my_deps//requests",
-        "@my_deps//pandas",
-        "@my_deps//pydantic",
     ],
 )

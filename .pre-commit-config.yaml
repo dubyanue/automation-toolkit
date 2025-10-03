@@ -24,7 +24,7 @@ repos:
         name: Format Bazel Files
         entry: /usr/local/bin/buildifier
         language: system
-        files: '\.(BUILD|MODULE|WORKSPACE|bzl)$'
+        files: '\.(BUILD|MODULE|WORKSPACE|bzl|bazel)$'
         args:
           - "-mode=fix" # Automatically fix issues, or use "-mode=check" for just checking
           - "-lint=fix"
@@ -41,17 +41,17 @@ repos:
           - "--fix"
           - "--show-fixes"
           - "--preview"
-        types: [python]
+        types_or: [python, pyi]
         verbose: true
       - id: ruff-format
-        types: [python]
+        types_or: [python, pyi]
         verbose: true
 
   -   repo: https://github.com/pre-commit/mirrors-pylint
       rev: 'v3.0.0a5'
       hooks:
       - id: pylint
-        types: [python]
+        types_or: [python, pyi]
         language: python
         verbose: true
 
