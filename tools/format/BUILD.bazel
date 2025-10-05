@@ -11,23 +11,49 @@ format_multirun(
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     python_fix_args = [
         "format",
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     starlark = "@buildifier_prebuilt//:buildifier",
     starlark_check_args = [
         "--mode=diff",
         "--lint=warn",
         "--type=auto",
+        "-v",
     ],
     starlark_fix_args = [
         "--mode=fix",
         "--lint=fix",
         "--type=auto",
+        "-v",
+    ],
+    toml = "//:taplo_bin",
+    toml_check_args = [
+        "format",
+        "--check",
+        "--diff",
+        "--verbose",
+    ],
+    toml_fix_args = [
+        "format",
+        "--diff",
+        "--verbose",
+    ],
+    yaml = "//:yamlfmt_bin",
+    yaml_check_args = [
+        "-lint",
+        "-verbose",
+        "-gitignore_excludes",
+    ],
+    yaml_fix_args = [
+        "-verbose",
+        "-gitignore_excludes",
     ],
 )
 
@@ -40,12 +66,27 @@ format_test(
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     starlark = "@buildifier_prebuilt//:buildifier",
     starlark_check_args = [
         "--mode=diff",
         "--lint=warn",
         "--type=auto",
+        "-v",
+    ],
+    toml = "//:taplo_bin",
+    toml_check_args = [
+        "format",
+        "--check",
+        "--diff",
+        "--verbose",
     ],
     workspace = "//:MODULE.bazel",
+    yaml = "//:yamlfmt_bin",
+    yaml_check_args = [
+        "-lint",
+        "-verbose",
+        "-gitignore_excludes",
+    ],
 )

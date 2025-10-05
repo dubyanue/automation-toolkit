@@ -13,6 +13,7 @@ format_multirun(
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     python_fix_args = [
         "check",
@@ -21,16 +22,42 @@ format_multirun(
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     starlark = "//:buildiier_bin",
     starlark_check_args = [
         "--mode=fix",
         "--lint=fix",
+        "-v",
     ],
     starlark_fix_args = [
         "--mode=fix",
         "--lint=fix",
+        "-v",
     ],
+
+    # NOTE: doesn't change anything. Only reporting
+    toml = "//:taplo_bin",
+    toml_check_args = [
+        "lint",
+        "--verbose",
+        "--default-schema-catalogs",
+    ],
+    toml_fix_args = [
+        "lint",
+        "--verbose",
+        "--default-schema-catalogs",
+    ],
+    yaml = "//:yamllint",
+    yaml_check_args = [
+        "--strict",
+        "--format=github",
+    ],
+    yaml_fix_args = [
+        "--strict",
+        "--format=github",
+    ],
+    ##########################################
 )
 
 format_multirun(
@@ -41,28 +68,56 @@ format_multirun(
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     python_fix_args = [
         "check",
         "--preview",
         "--respect-gitignore",
         "--force-exclude",
+        "--verbose",
     ],
     starlark = "//:buildiier_bin",
     starlark_check_args = [
         "--mode=check",
         "--lint=warn",
+        "-v",
     ],
     starlark_fix_args = [
         "--mode=check",
         "--lint=warn",
+        "-v",
+    ],
+
+    # NOTE: doesn't change anything. Only reporting
+    toml = "//:taplo_bin",
+    toml_check_args = [
+        "lint",
+        "--verbose",
+        "--default-schema-catalogs",
+    ],
+    toml_fix_args = [
+        "lint",
+        "--verbose",
+        "--default-schema-catalogs",
+    ],
+    yaml = "//:yamllint",
+    yaml_check_args = [
+        "--strict",
+        "--format=github",
+    ],
+    yaml_fix_args = [
+        "--strict",
+        "--format=github",
     ],
 )
 
 buildifier(
     name = "buildifier.fix",
     exclude_patterns = [
-        "./.git/*",
+        "./.git/**",
+        "bazel*/**",
+        ".venv/**",
     ],
     lint_mode = "fix",
     mode = "fix",

@@ -69,7 +69,8 @@ RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor -o /usr
 
 
 RUN python3.11 -m pip install --upgrade pip setuptools wheel cython && \
-    python3.11 -m pip install -r requirements.txt
+    python3.11 -m pip install -r requirements.txt && \
+    pre-commit install
 
 USER ${USERNAME}
 

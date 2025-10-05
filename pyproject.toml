@@ -3,16 +3,9 @@
 line-length = 88
 # fix = true
 
-include = [
-    "**/*.py",
-    "**/*.pyi"
-]
+include = ["**/*.py", "**/*.pyi", "**/*.toml"]
 
-extend-include = [
-    "*.pyw",
-    "*.py",
-    "*.pyi"
-]
+extend-include = ["*.pyw", "*.py", "*.pyi", "*.toml"]
 
 force-exclude = true
 show-fixes = true
@@ -20,90 +13,91 @@ preview = true
 respect-gitignore = true
 
 exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".ipynb_checkpoints",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    ".vscode",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "site-packages",
-    "venv",
-    '**/*_pb2.py',
-    '**/*_pb2_grpc.py'
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
+  '**/*_pb2.py',
+  '**/*_pb2_grpc.py',
+  "*bazel*/**",
 ]
 
 [tool.ruff.lint]
 select = [
-    "ERA",      # eradicate (ERA)
-    "FAST",     # FastAPI (FAST)
-    "YTT",      # flake8-2020 (YTT)
-    "ANN",      # flake8-annotations (ANN)
-    "ASYNC",    # flake8-async (ASYNC)
-    "S",        # flake8-bandit (S)
-    "BLE",      # flake8-blind-except (BLE)
-    "FBT",      # flake8-boolean-trap (FBT)
-    "B",        # flake8-bugbear (B)
-    "A",        # flake8-builtins (A)
-    "COM",      # flake8-commas (COM)
-    "C4",       # flake8-comprehensions (C4)
-    "DTZ",      # flake8-datetimez (DTZ)
-    "EM",       # flake8-errmsg (EM)
-    "EXE",      # flake8-executable (EXE)
-    "ISC",      # flake8-implicit-str-concat (ISC)
-    "ICN",      # flake-8-import-conventions (ICN)
-    "LOG",      # flake8-logging (LOG)
-    "G",        # flake8-logging-format (G)
-    "PIE",      # flake8-pie (PIE)
-    "T20",      # flake8-print (T20)
-    "PYI",      # flake8-pyi (PYI)
-    "PT",       # flake8-pytest-style (PT)
-    "Q",        # flake8-quotes (Q)
-    "RSE",      # flake8-raise
-    "RET",      # flake8-return
-    "SIM",      # flake8-simplify (SIM)
-    "SLOT",     # flake8-slots (SLOT)
-    "TID",      # flake8-tidy-imports (TID)
-    "TC",       # flake8-type-checking (TC)
-    "ARG",      # flake8-unused-arguments
-    "PTH",      # flake8-use-pathlib
-    "FLY",      # flynt (FLY)
-    "I",        # isort (I)
-    "C90",      # mccabe (C90)
-    "NPY",      # NumPy-specific rules (NPY)
-    "PD",       # pandas-vet (PD)
-    "N",        # pep8-naming (N)
-    "PERF",     # Perflint (PERF)
-    "E",        # pycodestyle Error (E)
-    "W",        # pycodestyle Warning (W)
-    "F",        # Pyflakes (F)
-    "PL",       # Pylint (PL)
-    "UP",       # pyupgrade (UP)
-    "FURB",     # refurb (FURB)
-    "RUF",      # Ruff-specific rules (RUF)
-    "TRY",      # tryceratops (TRY)
+  "ERA",   # eradicate (ERA)
+  "FAST",  # FastAPI (FAST)
+  "YTT",   # flake8-2020 (YTT)
+  "ANN",   # flake8-annotations (ANN)
+  "ASYNC", # flake8-async (ASYNC)
+  "S",     # flake8-bandit (S)
+  "BLE",   # flake8-blind-except (BLE)
+  "FBT",   # flake8-boolean-trap (FBT)
+  "B",     # flake8-bugbear (B)
+  "A",     # flake8-builtins (A)
+  "COM",   # flake8-commas (COM)
+  "C4",    # flake8-comprehensions (C4)
+  "DTZ",   # flake8-datetimez (DTZ)
+  "EM",    # flake8-errmsg (EM)
+  "EXE",   # flake8-executable (EXE)
+  "ISC",   # flake8-implicit-str-concat (ISC)
+  "ICN",   # flake-8-import-conventions (ICN)
+  "LOG",   # flake8-logging (LOG)
+  "G",     # flake8-logging-format (G)
+  "PIE",   # flake8-pie (PIE)
+  "T20",   # flake8-print (T20)
+  "PYI",   # flake8-pyi (PYI)
+  "PT",    # flake8-pytest-style (PT)
+  "Q",     # flake8-quotes (Q)
+  "RSE",   # flake8-raise
+  "RET",   # flake8-return
+  "SIM",   # flake8-simplify (SIM)
+  "SLOT",  # flake8-slots (SLOT)
+  "TID",   # flake8-tidy-imports (TID)
+  "TC",    # flake8-type-checking (TC)
+  "ARG",   # flake8-unused-arguments
+  "PTH",   # flake8-use-pathlib
+  "FLY",   # flynt (FLY)
+  "I",     # isort (I)
+  "C90",   # mccabe (C90)
+  "NPY",   # NumPy-specific rules (NPY)
+  "PD",    # pandas-vet (PD)
+  "N",     # pep8-naming (N)
+  "PERF",  # Perflint (PERF)
+  "E",     # pycodestyle Error (E)
+  "W",     # pycodestyle Warning (W)
+  "F",     # Pyflakes (F)
+  "PL",    # Pylint (PL)
+  "UP",    # pyupgrade (UP)
+  "FURB",  # refurb (FURB)
+  "RUF",   # Ruff-specific rules (RUF)
+  "TRY",   # tryceratops (TRY)
 ]
 
 ignore = [
-    "COM812",   # Conflicts with formatter, missing-trailing-comma	Trailing comma missing
-    "D",        # pydocstyle (D) https://docs.astral.sh/ruff/rules/#pydocstyle-d
+  "COM812", # Conflicts with formatter, missing-trailing-comma	Trailing comma missing
+  "D",      # pydocstyle (D) https://docs.astral.sh/ruff/rules/#pydocstyle-d
 ]
 fixable = ["ALL"]
 
@@ -122,6 +116,8 @@ fixable = ["ALL"]
 # usually to register additional checkers.
 # extension-pkg-allow-list = ["pytest", "pydantic"]
 # load-plugins = ["pylint_pytest", "pylint_pydantic"]
+extension-pkg-allow-list = ["pytest"]
+load-plugins = ["pylint_pytest"]
 
 # Add files or directories matching the regular expressions patterns to the
 # ignore-list. The regex matches against paths and can be in Posix or Windows
@@ -141,118 +137,118 @@ disable = "all"
 # # us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#Home:
 enable = [
 
-    # Design checker Messages
-    "too-many-instance-attributes",
-    "too-few-public-methods",                       # Classes that should be functions
-    "consider-using-enumerate",                     # Loop optimization suggestions
-    "consider-using-with",                          # Context manager suggestions
-    "unnecessary-lambda",
-    "eval-used",
-    "comparison-with-callable",
-    "consider-using-join",                          # R1713
-    "consider-using-in",                            # R1714
-    "too-many-ancestors",
+  # Design checker Messages
+  "too-many-instance-attributes",
+  "too-few-public-methods",       # Classes that should be functions
+  "consider-using-enumerate",     # Loop optimization suggestions
+  "consider-using-with",          # Context manager suggestions
+  "unnecessary-lambda",
+  "eval-used",
+  "comparison-with-callable",
+  "consider-using-join",          # R1713
+  "consider-using-in",            # R1714
+  "too-many-ancestors",
 
-    # Refactoring checker
-    "consider-using-set-comprehension",             # R1718
-    "chained-comparison",                           # R1716
-    "consider-using-dict-comprehension",            # R1717
-    "consider-using-get",
-    "raising-bad-type",
-    "boolean-datetime",                             # W1502
-    "simplifiable-if-expression",                   # R1719
-    "modified-iterating-dict",
-    "deprecated-method",                            # W4902
-    "deprecated-argument",                          # W4903
-    "deprecated-class",                             # W4904
-    "deprecated-attribute",                         # W4906
-    "deprecated-decorator",                         # W4905
-    "redundant-unittest-assert",                    # W1503
-    "bad-thread-instantiation",                     # W1506
-    "no-else-continue",                             # R1724
-    "no-else-break",                                # R1723
-    "consider-using-sys-exit",                      # R1722
-    "super-with-arguments",                         # R1725 - might be a dupe to ruff's UP008	super-call-with-parameters	Use super() instead of super(__class__, self)
-    "consider-using-ternary",
-    "simplifiable-condition",                       # R1726
-    "modified-iterating-list",
-    "consider-using-generator",                     # R1728
-    "consider-using-min-builtin",                   # R1730
-    "consider-using-max-builtin",                   # R1731
-    "try-except-raise",
-    "stop-iteration-return",
-    "condition-evals-to-constant",                  # R1727
-    "simplify-boolean-expression",
-    "inconsistent-return-statements",
-    "consider-swap-variables",                      # R1712
-    "no-else-return",
-    "trailing-comma-tuple",
-    "unreachable",                                  # Dead code detection
-    "useless-else-on-loop",                         # Unnecessary else clauses
-    "duplicate-key",
-    "super-init-not-called",                        # Parent constructor not called
-    "non-parent-init-called",                       # Wrong parent constructor called
+  # Refactoring checker
+  "consider-using-set-comprehension",  # R1718
+  "chained-comparison",                # R1716
+  "consider-using-dict-comprehension", # R1717
+  "consider-using-get",
+  "raising-bad-type",
+  "boolean-datetime",                  # W1502
+  "simplifiable-if-expression",        # R1719
+  "modified-iterating-dict",
+  "deprecated-method",                 # W4902
+  "deprecated-argument",               # W4903
+  "deprecated-class",                  # W4904
+  "deprecated-attribute",              # W4906
+  "deprecated-decorator",              # W4905
+  "redundant-unittest-assert",         # W1503
+  "bad-thread-instantiation",          # W1506
+  "no-else-continue",                  # R1724
+  "no-else-break",                     # R1723
+  "consider-using-sys-exit",           # R1722
+  "super-with-arguments",              # R1725 - might be a dupe to ruff's UP008	super-call-with-parameters	Use super() instead of super(__class__, self)
+  "consider-using-ternary",
+  "simplifiable-condition",            # R1726
+  "modified-iterating-list",
+  "consider-using-generator",          # R1728
+  "consider-using-min-builtin",        # R1730
+  "consider-using-max-builtin",        # R1731
+  "try-except-raise",
+  "stop-iteration-return",
+  "condition-evals-to-constant",       # R1727
+  "simplify-boolean-expression",
+  "inconsistent-return-statements",
+  "consider-swap-variables",           # R1712
+  "no-else-return",
+  "trailing-comma-tuple",
+  "unreachable",                       # Dead code detection
+  "useless-else-on-loop",              # Unnecessary else clauses
+  "duplicate-key",
+  "super-init-not-called",             # Parent constructor not called
+  "non-parent-init-called",            # Wrong parent constructor called
 
-    # Type Checkers
-    "no-member",                                    # E1101
-    "not-callable",                                 # E1102
-    "assignment-from-no-return",                    # E1111
-    "no-value-for-parameter",                       # E1120
-    "too-many-function-args",                       # E1121
-    "unexpected-keyword-arg",                       # E1123
-    "redundant-keyword-arg",                        # E1124
-    "missing-kwoa",                                 # E1125
-    "invalid-sequence-index",                       # E1126
-    "invalid-slice-index",                          # E1127
-    "assignment-from-none",                         # E1128
-    "not-context-manager",                          # E1129
-    "invalid-unary-operand-type",                   # E1130
-    "unsupported-binary-operation",                 # E1131
-    "repeated-keyword",                             # E1132
-    "not-an-iterable",                              # E1133
-    "not-a-mapping",                                # E1134
-    "unsupported-membership-test",                  # E1135
-    "unsubscriptable-object",                       # E1136
-    "unsupported-assignment-operation",             # E1137
-    "unsupported-delete-operation",                 # E1138
-    "invalid-metaclass",                            # E1139
-    "dict-iter-missing-items",                      # E1141
-    "await-outside-async",                          # E1142
-    "unhashable-member",                            # E1143
-    "invalid-slice-step",                           # E1144
-    # "async-context-manager-with-regular-with",      # E1145
-    "keyword-arg-before-vararg",                    # W1113
-    "arguments-out-of-order",                       # W1114
-    "non-str-assignment-to-dunder-name",            # W1115
-    "isinstance-second-argument-not-valid-type",    # W1116
-    "kwarg-superseded-by-positional-arg",           # W1117
+  # Type Checkers
+  "no-member",                        # E1101
+  "not-callable",                     # E1102
+  "assignment-from-no-return",        # E1111
+  "no-value-for-parameter",           # E1120
+  "too-many-function-args",           # E1121
+  "unexpected-keyword-arg",           # E1123
+  "redundant-keyword-arg",            # E1124
+  "missing-kwoa",                     # E1125
+  "invalid-sequence-index",           # E1126
+  "invalid-slice-index",              # E1127
+  "assignment-from-none",             # E1128
+  "not-context-manager",              # E1129
+  "invalid-unary-operand-type",       # E1130
+  "unsupported-binary-operation",     # E1131
+  "repeated-keyword",                 # E1132
+  "not-an-iterable",                  # E1133
+  "not-a-mapping",                    # E1134
+  "unsupported-membership-test",      # E1135
+  "unsubscriptable-object",           # E1136
+  "unsupported-assignment-operation", # E1137
+  "unsupported-delete-operation",     # E1138
+  "invalid-metaclass",                # E1139
+  "dict-iter-missing-items",          # E1141
+  "await-outside-async",              # E1142
+  "unhashable-member",                # E1143
+  "invalid-slice-step",               # E1144
+  # "async-context-manager-with-regular-with",      # E1145
+  "keyword-arg-before-vararg",                 # W1113
+  "arguments-out-of-order",                    # W1114
+  "non-str-assignment-to-dunder-name",         # W1115
+  "isinstance-second-argument-not-valid-type", # W1116
+  "kwarg-superseded-by-positional-arg",        # W1117
 
 
-    # Variables checker Messages
-    "undefined-variable",                           # E0602
-    "undefined-all-variable",                       # E0603
-    "invalid-all-object",                           # E0604
-    "invalid-all-format",                           # E0605
-    "possibly-used-before-assignment",              # E0606
-    "no-name-in-module",                            # E0611
-    "unpacking-non-sequence",                       # E0633
-    "potential-index-error",                        # E0643
-    "global-variable-undefined",                    # W0601
-    "global-variable-not-assigned",                 # W0602
-    "global-statement",                             # W0603
-    "global-at-module-level",                       # W0604
-    "unused-import",                                # W0611
-    "unused-variable",                              # W0612
-    "unused-argument",                              # W0613
-    "unused-wildcard-import",                       # W0614
-    "redefined-outer-name",                         # W0621
-    "redefined-builtin",                            # W0622
-    "undefined-loop-variable",                      # W0631
-    "unbalanced-tuple-unpacking",                   # W0632
-    "cell-var-from-loop",                           # W0640
-    "possibly-unused-variable",                     # W0641
-    "self-cls-assignment",                          # W0642
-    "unbalanced-dict-unpacking",                    # W0644
+  # Variables checker Messages
+  "undefined-variable",              # E0602
+  "undefined-all-variable",          # E0603
+  "invalid-all-object",              # E0604
+  "invalid-all-format",              # E0605
+  "possibly-used-before-assignment", # E0606
+  "no-name-in-module",               # E0611
+  "unpacking-non-sequence",          # E0633
+  "potential-index-error",           # E0643
+  "global-variable-undefined",       # W0601
+  "global-variable-not-assigned",    # W0602
+  "global-statement",                # W0603
+  "global-at-module-level",          # W0604
+  "unused-import",                   # W0611
+  "unused-variable",                 # W0612
+  "unused-argument",                 # W0613
+  "unused-wildcard-import",          # W0614
+  "redefined-outer-name",            # W0621
+  "redefined-builtin",               # W0622
+  "undefined-loop-variable",         # W0631
+  "unbalanced-tuple-unpacking",      # W0632
+  "cell-var-from-loop",              # W0640
+  "possibly-unused-variable",        # W0641
+  "self-cls-assignment",             # W0642
+  "unbalanced-dict-unpacking",       # W0644
 ]
 
 [tool.ruff.lint.isort]

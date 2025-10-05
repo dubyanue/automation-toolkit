@@ -29,16 +29,10 @@ query --order_output=full
 # Configure linting with aspect rules_lint
 # Source: https://github.com/aspect-build/rules_lint/blob/main/docs/linting.md
 
-# Enable ruff linting on all targets
-# build:lint --aspects=//tools/lint:linters.bzl%ruff
-# build:lint --@aspect_rules_lint//lint:fail_on_violation
-
-# Optional: Debug mode for linting
-# build:lint-debug --@aspect_rules_lint//lint:debug
-
 # AUTOMATIC LINTING: Enable linting on ALL builds and tests by default
 # Source: https://github.com/aspect-build/rules_lint/blob/main/docs/linting.md#usage
 # Comment these out if you want to opt-in with --config=lint instead
 build --aspects=//tools/lint:linters.bzl%ruff
 build --@aspect_rules_lint//lint:fail_on_violation
+build --@aspect_rules_lint//lint:debug
 #####################################################

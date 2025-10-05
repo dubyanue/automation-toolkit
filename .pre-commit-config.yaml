@@ -1,3 +1,5 @@
+---
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
 repos:
   # General file cleanup
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -23,20 +25,6 @@ repos:
         verbose: true
       - id: check-merge-conflict
         verbose: true
-
-  - repo: local
-    hooks:
-      - id: buildifier
-        name: Format Bazel Files
-        entry: /usr/local/bin/buildifier
-        language: system
-        files: '\.(BUILD|MODULE|WORKSPACE|bzl|bazel)$'
-        args:
-          - "-mode=fix" # Automatically fix issues, or use "-mode=check" for just checking
-          - "-lint=fix"
-          - "-v"
-        verbose: true
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.13.2
@@ -52,41 +40,56 @@ repos:
       - id: ruff-format
         types_or: [python, pyi]
         verbose: true
-
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.18.2  # Use the latest version
     hooks:
       - id: mypy
         types_or: [python, pyi]
         verbose: true
-        additional_dependencies: ["types-pytz"]  # Add any stub packages you need
-
-  -   repo: https://github.com/pre-commit/mirrors-pylint
-      rev: 'v3.0.0a5'
-      hooks:
+        additional_dependencies: ["types-pytz"]  # needed stub packages
+  - repo: https://github.com/pre-commit/mirrors-pylint
+    rev: 'v3.0.0a5'
+    hooks:
       - id: pylint
         types_or: [python, pyi]
         language: python
         verbose: true
-        additional_dependencies: [pylint-pytest, pylint-pydantic]
-        entry: bash -c 'PYTHONWARNINGS="ignore:pkg_resources is deprecated" pylint "$@"' --
+        additional_dependencies:
+          - pylint-plugin-utils
+          - pylint-pytest
+        entry: >
+          bash -c 'PYTHONWARNINGS="ignore:pkg_resources is deprecated" pylint
+          "$@"' --
 
-  # Build validation - run Bazel build before commit
   - repo: local
+    # Build validation - run Bazel build before commit
     hooks:
-      - id: bazel-build
-        name: Bazel Build Check
-        entry: bazel build //...
+      - id: bazel-format-check
+        name: Bazel Format Check
+        entry: bazel run //:format.check
         language: system
         pass_filenames: false
         always_run: false
-        files: '\.(BUILD|bzl|WORKSPACE|pyi|py)$'  # Add this line
+        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+        require_serial: true
+      - id: bazel-lint-check
+        name: Bazel Lint Check
+        entry: bazel run //:check
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+        require_serial: true
         verbose: true
-
-      # - id: bazel-test
-      #   name: Bazel Test Check
-      #   entry: bazel test //... --test_tag_filters=-integration --cache_test_results=yes
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: true
-      #   verbose: true
+      - id: bazel-tests
+        name: Bazel Tests
+        entry: bazel test //...
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+        require_serial: true
+        verbose: true
+        stages:
+          - pre-commit
+          - pre-push

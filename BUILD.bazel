@@ -7,10 +7,22 @@ package(default_visibility = ["//visibility:public"])
 # Source: https://github.com/aspect-build/rules_lint/blob/main/docs/linting.md
 exports_files(
     [
-        "pyproject.toml",
         ".gitignore",
         "MODULE.bazel",
-    ],
+    ] + glob(
+        include = [
+            "**/*.yaml",
+            "**/*.toml",
+            ".*.yaml",  # Add this for dotfiles
+            ".*.toml",  # Add this for dotfiles
+        ],
+        allow_empty = True,
+        exclude = [
+            ".venv/**",
+            "*bazel-*/**",
+            "*cache*/**",
+        ],
+    ),
 )
 
 py_library(
@@ -19,33 +31,56 @@ py_library(
     data = [
         "//:.gitignore",
         "//:MODULE.bazel",
-        "//:pyproject.toml",
+    ] + [
+        "//:{}".format(f)
+        for f in glob(
+            [
+                "**/*.yaml",
+                "**/*.toml",
+                ".*.yaml",  # Add this for dotfiles
+                ".*.toml",  # Add this for dotfiles
+            ],
+            allow_empty = True,
+            exclude = [
+                "bazel-*/**",
+                ".venv/**",
+                "*cache*/**",
+            ],
+        )
     ],
     deps = [
-        "@my_deps//beautifulsoup4",
-        "@my_deps//coverage",
-        "@my_deps//iniconfig",
-        "@my_deps//jinja2",
-        "@my_deps//markupsafe",
-        "@my_deps//packaging",
-        "@my_deps//pluggy",
-        "@my_deps//pygments",
-        "@my_deps//pytz",
-        "@my_deps//ruff",
-        "@my_deps//soupsieve",
-        "@my_deps//decorator",
-        "@my_deps//scipy",
-        "@my_deps//pystoi",
-        "@my_deps//mir_eval",
-        "@my_deps//pesq",
-        "@my_deps//einops",
-        "@my_deps//cached_property",
-        "@my_deps//pb_bss_eval",
-        "@my_deps//pylint",
-        "@my_deps//pydantic",
-        # "@my_deps//pylint_plugin_utils",
-        # "@my_deps//pylint_pytest",
-        # "@my_deps//pylint_pydantic"
+        "@my_deps//{}".format(f)
+        for f in [
+            "yamllint",
+            "ruamel_yaml_clib",
+            "ruamel_yaml",
+            "yamlfmt",
+            "taplo",
+            "beautifulsoup4",
+            "coverage",
+            "iniconfig",
+            "jinja2",
+            "markupsafe",
+            "packaging",
+            "pluggy",
+            "pygments",
+            "pytz",
+            "ruff",
+            "soupsieve",
+            "decorator",
+            "scipy",
+            "pystoi",
+            "mir_eval",
+            "pesq",
+            "einops",
+            "cached_property",
+            "pb_bss_eval",
+            "pylint",
+            "pydantic",
+            "pylint_plugin_utils",
+            "pylint_pytest",
+            "pylint_pydantic",
+        ]
     ],
 )
 
@@ -54,11 +89,15 @@ py_library(
     srcs = [],
     deps = [
         ":misc_deps",
-        "@my_deps//pytest",
-        "@my_deps//pytest_cov",
-        "@my_deps//pytest_html",
-        "@my_deps//pytest_html_merger",
-        "@my_deps//pytest_metadata",
+    ] + [
+        "@my_deps//{}".format(f)
+        for f in [
+            "pytest",
+            "pytest_cov",
+            "pytest_html",
+            "pytest_html_merger",
+            "pytest_metadata",
+        ]
     ],
 )
 
@@ -68,13 +107,33 @@ alias(
 )
 
 alias(
-    name = "check",
+    name = "format.check",
     actual = "//tools/format:format.check",
+)
+
+alias(
+    name = "fix",
+    actual = "//tools/lint:fix",
+)
+
+alias(
+    name = "check",
+    actual = "//tools/lint:check",
 )
 
 alias(
     name = "ruff_bin",
     actual = "@my_deps_312_ruff//:bin/ruff",
+)
+
+alias(
+    name = "taplo_bin",
+    actual = "@my_deps_312_taplo//:bin/taplo",
+)
+
+alias(
+    name = "yamlfmt_bin",
+    actual = "@yamlfmt//:yamlfmt",
 )
 
 alias(
@@ -88,11 +147,16 @@ alias(
 py_console_script_binary(
     name = "pylint",
     binary_rule = py_binary,
-    data = [
-        "//:pyproject.toml",
-        "//src/file_factory:file_lib",
-    ],
     pkg = "@my_deps//pylint:pkg",
+    deps = [
+        ":misc_deps",
+    ],
+)
+
+py_console_script_binary(
+    name = "yamllint",
+    binary_rule = py_binary,
+    pkg = "@my_deps//yamllint:pkg",
     deps = [
         ":misc_deps",
     ],

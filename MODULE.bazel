@@ -15,8 +15,10 @@ use_repo(python)
 # NOTE PIP REQUIREMENTS
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 
-# Modern approach: Expose ruff binary via whl_mods
+# NOTE: Modern approach: Expose ruff binary via whl_mods
 # Source: https://rules-python.readthedocs.io/en/latest/howto/pypi-headers.html
+
+# NOTE: ruff
 pip.whl_mods(
     additive_build_content = """
 exports_files(["bin/ruff"])
@@ -24,16 +26,39 @@ exports_files(["bin/ruff"])
     hub_name = "whl_mods_hub",
     whl_name = "ruff",
 )
+
+# NOTE: taplo
+pip.whl_mods(
+    additive_build_content = """
+exports_files(["bin/taplo"])
+    """,
+    hub_name = "whl_mods_hub",
+    whl_name = "taplo",
+)
 use_repo(pip, "whl_mods_hub")
+
 pip.parse(
     hub_name = "my_deps",
     python_version = "3.12",
     requirements_lock = "//:requirements.txt",
     whl_modifications = {
         "@whl_mods_hub//:ruff.json": "ruff",
+        "@whl_mods_hub//:taplo.json": "taplo",
     },
 )
 use_repo(pip, "my_deps")
 
 # Make ruff binary available
 use_repo(pip, "my_deps_312_ruff")
+use_repo(pip, "my_deps_312_taplo")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "yamlfmt",
+    build_file_content = """
+exports_files(["yamlfmt"], visibility = ["//visibility:public"])
+""",
+    sha256 = "b114115b6804cfd203195d222558e4feb38e311fffb590c4e13642fa21bd0e37",
+    urls = ["https://github.com/google/yamlfmt/releases/download/v0.17.2/yamlfmt_0.17.2_Linux_x86_64.tar.gz"],
+)
