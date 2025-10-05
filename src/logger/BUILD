@@ -10,7 +10,7 @@ py_library(
         exclude = [
             "*_test.py",
         ],
-    )
+    ),
 )
 
 ruff_test(

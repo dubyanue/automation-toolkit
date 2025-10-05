@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, tzinfo
 from logging import Formatter, LogRecord
 
 import pytz
@@ -9,12 +9,12 @@ log_fmt: str = (
 )
 date_fmt: str = "%Y-%m-%d %H:%M:%S.%f"
 
-EST = pytz.timezone("US/Eastern")
+EST: tzinfo = pytz.timezone("US/Eastern")
 
 
 class CustomLogFormatter(Formatter):
     def formatTime(self, record: LogRecord, datefmt: str | None = None) -> str:  # noqa: N802, PLR6301
-        ct = datetime.datetime.fromtimestamp(record.created).astimezone(EST)
+        ct = datetime.fromtimestamp(record.created).astimezone(EST)
         if datefmt:
             s = ct.strftime(datefmt)
         else:
