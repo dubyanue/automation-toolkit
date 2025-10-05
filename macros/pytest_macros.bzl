@@ -1,3 +1,6 @@
+"""Macros for bazel pytest
+"""
+
 load("@rules_python//python:defs.bzl", "py_test")
 
 def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):

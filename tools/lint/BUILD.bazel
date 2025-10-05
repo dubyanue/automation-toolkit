@@ -1,0 +1,77 @@
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier", "buildifier_test")
+
+package(default_visibility = ["//visibility:public"])
+
+format_multirun(
+    name = "fix",
+    python = "//:ruff_bin",
+    python_check_args = [
+        "check",
+        "--fix",
+        "--show-fixes",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    python_fix_args = [
+        "check",
+        "--fix",
+        "--show-fixes",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    starlark = "//:buildiier_bin",
+    starlark_check_args = [
+        "--mode=fix",
+        "--lint=fix",
+    ],
+    starlark_fix_args = [
+        "--mode=fix",
+        "--lint=fix",
+    ],
+)
+
+format_multirun(
+    name = "check",
+    python = "//:ruff_bin",
+    python_check_args = [
+        "check",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    python_fix_args = [
+        "check",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    starlark = "//:buildiier_bin",
+    starlark_check_args = [
+        "--mode=check",
+        "--lint=warn",
+    ],
+    starlark_fix_args = [
+        "--mode=check",
+        "--lint=warn",
+    ],
+)
+
+buildifier(
+    name = "buildifier.fix",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    lint_mode = "fix",
+    mode = "fix",
+)
+
+buildifier_test(
+    name = "buildifier.check",
+    diff_command = "diff -u",
+    mode = "diff",
+    no_sandbox = True,
+    workspace = "//:MODULE.bazel",
+)

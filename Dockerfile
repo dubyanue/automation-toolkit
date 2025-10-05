@@ -46,6 +46,8 @@ RUN apt-get install -y \
     liblapack-dev \
     bash-completion \
     libcurl4-openssl-dev \
+    clang \
+    gcc \
     pre-commit \
     && rm -rf /var/lib/apt/lists/*
 ########################################################

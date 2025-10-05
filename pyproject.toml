@@ -1,11 +1,23 @@
 
 [tool.ruff]
 line-length = 88
+# fix = true
 
 include = [
     "**/*.py",
     "**/*.pyi"
 ]
+
+extend-include = [
+    "*.pyw",
+    "*.py",
+    "*.pyi"
+]
+
+force-exclude = true
+show-fixes = true
+preview = true
+respect-gitignore = true
 
 exclude = [
     ".bzr",
@@ -33,7 +45,9 @@ exclude = [
     "dist",
     "node_modules",
     "site-packages",
-    "venv"
+    "venv",
+    '**/*_pb2.py',
+    '**/*_pb2_grpc.py'
 ]
 
 [tool.ruff.lint]
@@ -91,9 +105,36 @@ ignore = [
     "COM812",   # Conflicts with formatter, missing-trailing-comma	Trailing comma missing
     "D",        # pydocstyle (D) https://docs.astral.sh/ruff/rules/#pydocstyle-d
 ]
+fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/*_pb2.py" = ["ALL"]
+"**/*_pb2_grpc.py" = ["ALL"]
+
+# Allow use of assert in test files and disable pytest fixture return/yield conversion
+"*test*.py" = ["S101", "RET504"]
+"test_*.py" = ["S101", "RET504"]
+"*_test.py" = ["S101", "RET504"]
+
+[tool.pylint.main]
+
+# List of plugins (as comma separated values of python module names) to load,
+# usually to register additional checkers.
+# extension-pkg-allow-list = ["pytest", "pydantic"]
+# load-plugins = ["pylint_pytest", "pylint_pydantic"]
+
+# Add files or directories matching the regular expressions patterns to the
+# ignore-list. The regex matches against paths and can be in Posix or Windows
+# format. Because '\\' represents the directory delimiter on Windows systems, it
+# can't be used as an escape character.
+ignore-paths = [".*_pb2(_grpc)*[.]py$|.*_pb2(_grpc)*[.]py$"]
+
+# Minimum Python version to use for version dependent checks. Will default to the
+# version used to run pylint.
+py-version = "3.11"
+
+# Naming style matching correct class constant names.
+class-const-naming-style = "UPPER_CASE"
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = "all"
@@ -214,5 +255,13 @@ enable = [
     "unbalanced-dict-unpacking",                    # W0644
 ]
 
+[tool.ruff.lint.isort]
+# Ensure consistent import sorting
+known-first-party = ["src"]
+
 [tool.mypy]
 python_version = "3.11"
+exclude = '.*_pb2(?:_grpc)?\.py$'
+strict = true
+mypy_path = 'stubs'
+disallow_untyped_decorators = false

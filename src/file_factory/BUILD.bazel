@@ -1,5 +1,6 @@
 load("@rules_python//python:defs.bzl", "py_library")
 load("//macros:pytest_macros.bzl", "custom_py_test")
+load("//tools/lint:linters.bzl", "ruff_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -9,12 +10,12 @@ py_library(
         include = ["*.py"],
         exclude = [
             "*_test.py",
+            "main.py",
         ],
     ),
-    data = glob(
-        ["*.pyi"],
-    ),
-    deps = [],
+    deps = [
+        "//:misc_deps",
+    ],
 )
 
 custom_py_test(
@@ -25,5 +26,13 @@ custom_py_test(
     deps = [
         ":file_lib",
         "//:py_test_deps",
+    ],
+)
+
+ruff_test(
+    name = "lint",
+    srcs = [
+        ":file_lib",
+        ":file_tests",
     ],
 )

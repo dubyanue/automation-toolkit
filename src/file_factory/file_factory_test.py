@@ -1,23 +1,58 @@
 from collections.abc import Generator
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import pytest
 
 from src.file_factory.file_factory import FileFactory
 
 
-@pytest.fixture
-def file_factory() -> Generator[tuple[str, FileFactory]]:
-    filename_: str = "/fake/file/test.txt"
+@pytest.fixture(name="file_factory")
+def fixture_file_factory() -> Generator[FileFactory]:
+    # Setup
+    with NamedTemporaryFile(mode="w+", delete=False, encoding="utf-8") as tmp:
+        filename_: str = tmp.name
+
     file_factory_: FileFactory = FileFactory(filename_)
-    yield (filename_, file_factory_)
+    yield file_factory_
+
+    if (file_path := Path(filename_)).exists():
+        file_path.unlink(missing_ok=True)
 
 
-def test_basic_file_factory(file_factory_fixture) -> None:
+def test_basic_file_factory(file_factory: FileFactory) -> None:
     file_f: FileFactory
-
-    _, file_f = file_factory_fixture
+    file_f = file_factory
+    assert file_f.is_open is False
+    assert file_f.is_file() is True
     assert isinstance(file_f.get_path(), Path)
+    assert file_f.exists() is True
+
+
+def test_delete_create(file_factory: FileFactory) -> None:
+    file_f: FileFactory
+    file_f = file_factory
+    assert file_f.is_open is False
+    assert file_f.exists() is True
+    assert file_f.delete() is True
+    assert file_f.exists() is False
+    assert file_f.create() is True
+    assert file_f.exists() is True
+
+
+def test_read_write(file_factory: FileFactory) -> None:
+    file_f: FileFactory
+    test_str: str = "Who the hell do you think I am!?\n"
+    file_f = file_factory
+    with file_f.open("w") as fh:
+        fh.write(test_str)
+        assert file_f.is_open is True
+
+    assert file_f.is_open is False
+
+    with file_f.open("r") as fh:
+        assert fh.read() == test_str
+        assert file_f.is_open is True
 
 
 if __name__ == "__main__":

@@ -1,0 +1,51 @@
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun", "format_test")
+
+package(default_visibility = ["//visibility:public"])
+
+format_multirun(
+    name = "format",
+    python = "//:ruff_bin",
+    python_check_args = [
+        "format",
+        "--diff",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    python_fix_args = [
+        "format",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    starlark = "@buildifier_prebuilt//:buildifier",
+    starlark_check_args = [
+        "--mode=diff",
+        "--lint=warn",
+        "--type=auto",
+    ],
+    starlark_fix_args = [
+        "--mode=fix",
+        "--lint=fix",
+        "--type=auto",
+    ],
+)
+
+format_test(
+    name = "format_test",
+    no_sandbox = True,
+    python = "//:ruff_bin",
+    python_check_args = [
+        "format",
+        "--preview",
+        "--respect-gitignore",
+        "--force-exclude",
+    ],
+    starlark = "@buildifier_prebuilt//:buildifier",
+    starlark_check_args = [
+        "--mode=diff",
+        "--lint=warn",
+        "--type=auto",
+    ],
+    workspace = "//:MODULE.bazel",
+)

@@ -1,10 +1,26 @@
-load("@rules_python//python:defs.bzl", "py_library")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@rules_python//python/entry_points:py_console_script_binary.bzl", "py_console_script_binary")
 
 package(default_visibility = ["//visibility:public"])
+
+# Export pyproject.toml so it can be used by linters
+# Source: https://github.com/aspect-build/rules_lint/blob/main/docs/linting.md
+exports_files(
+    [
+        "pyproject.toml",
+        ".gitignore",
+        "MODULE.bazel",
+    ],
+)
 
 py_library(
     name = "misc_deps",
     srcs = [],
+    data = [
+        "//:.gitignore",
+        "//:MODULE.bazel",
+        "//:pyproject.toml",
+    ],
     deps = [
         "@my_deps//beautifulsoup4",
         "@my_deps//coverage",
@@ -14,7 +30,22 @@ py_library(
         "@my_deps//packaging",
         "@my_deps//pluggy",
         "@my_deps//pygments",
+        "@my_deps//pytz",
+        "@my_deps//ruff",
         "@my_deps//soupsieve",
+        "@my_deps//decorator",
+        "@my_deps//scipy",
+        "@my_deps//pystoi",
+        "@my_deps//mir_eval",
+        "@my_deps//pesq",
+        "@my_deps//einops",
+        "@my_deps//cached_property",
+        "@my_deps//pb_bss_eval",
+        "@my_deps//pylint",
+        "@my_deps//pydantic",
+        # "@my_deps//pylint_plugin_utils",
+        # "@my_deps//pylint_pytest",
+        # "@my_deps//pylint_pydantic"
     ],
 )
 
@@ -28,5 +59,41 @@ py_library(
         "@my_deps//pytest_html",
         "@my_deps//pytest_html_merger",
         "@my_deps//pytest_metadata",
+    ],
+)
+
+alias(
+    name = "format",
+    actual = "//tools/format:format",
+)
+
+alias(
+    name = "check",
+    actual = "//tools/format:format.check",
+)
+
+alias(
+    name = "ruff_bin",
+    actual = "@my_deps_312_ruff//:bin/ruff",
+)
+
+alias(
+    name = "buildiier_bin",
+    actual = "@buildifier_prebuilt//:buildifier",
+)
+
+# Direct alias to the ruff binary from the wheel
+# Source: Modern whl_mods approach for pre-built binaries
+
+py_console_script_binary(
+    name = "pylint",
+    binary_rule = py_binary,
+    data = [
+        "//:pyproject.toml",
+        "//src/file_factory:file_lib",
+    ],
+    pkg = "@my_deps//pylint:pkg",
+    deps = [
+        ":misc_deps",
     ],
 )

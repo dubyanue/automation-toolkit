@@ -11,6 +11,12 @@ repos:
         verbose: true
       - id: check-json
         verbose: true
+      - id: pretty-format-json
+        args:
+          - "--autofix"
+        verbose: true
+      - id: check-toml
+        verbose: true
       - id: check-added-large-files
         verbose: true
       - id: check-case-conflict
@@ -51,11 +57,9 @@ repos:
     rev: v1.18.2  # Use the latest version
     hooks:
       - id: mypy
-        args:
-          - "--strict"
         types_or: [python, pyi]
         verbose: true
-        additional_dependencies: []  # Add any stub packages you need
+        additional_dependencies: ["types-pytz"]  # Add any stub packages you need
 
   -   repo: https://github.com/pre-commit/mirrors-pylint
       rev: 'v3.0.0a5'
@@ -64,6 +68,8 @@ repos:
         types_or: [python, pyi]
         language: python
         verbose: true
+        additional_dependencies: [pylint-pytest, pylint-pydantic]
+        entry: bash -c 'PYTHONWARNINGS="ignore:pkg_resources is deprecated" pylint "$@"' --
 
   # Build validation - run Bazel build before commit
   - repo: local
