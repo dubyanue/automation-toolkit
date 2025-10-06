@@ -23,6 +23,7 @@ exports_files(
             ".venv/**",
             "*bazel-*/**",
             "*cache*/**",
+            ".*cache*/**",
         ],
     ),
 )
@@ -46,9 +47,10 @@ py_library(
             ],
             allow_empty = True,
             exclude = [
-                "bazel-*/**",
                 ".venv/**",
+                "*bazel-*/**",
                 "*cache*/**",
+                ".*cache*/**",
             ],
         )
     ],
@@ -159,6 +161,8 @@ py_console_script_binary(
     pkg = "@my_deps//pylint:pkg",
     deps = [
         ":misc_deps",
+        "//src/file_factory:file_lib",
+        "//src/logger:logger_lib",
     ],
 )
 

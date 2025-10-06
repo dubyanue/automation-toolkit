@@ -111,6 +111,15 @@ fixable = ["ALL"]
 "*_test.py" = ["S101", "RET504"]
 
 [tool.pylint.main]
+ignore-paths = [
+  ".*_pb2(_grpc)*[.]py$",
+  ".*/bazel-.*",
+  ".*/.venv/.*",
+  ".*/build/.*",
+  ".*/dist/.*",
+  ".*/node_modules/.*",
+  ".*/__pycache__/.*",
+]
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
@@ -123,7 +132,6 @@ load-plugins = ["pylint_pytest"]
 # ignore-list. The regex matches against paths and can be in Posix or Windows
 # format. Because '\\' represents the directory delimiter on Windows systems, it
 # can't be used as an escape character.
-ignore-paths = [".*_pb2(_grpc)*[.]py$|.*_pb2(_grpc)*[.]py$"]
 
 # Minimum Python version to use for version dependent checks. Will default to the
 # version used to run pylint.

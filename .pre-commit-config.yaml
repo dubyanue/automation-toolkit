@@ -82,6 +82,15 @@ repos:
         files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
         require_serial: true
         verbose: true
+      - id: bazel-pylint-check
+        name: Bazel Pylint Check
+        entry: bazel run //:pylint -- ./
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+        require_serial: true
+        verbose: true
       - id: bazel-tests
         name: Bazel Tests
         entry: bazel test //...

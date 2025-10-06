@@ -94,6 +94,8 @@ format_multirun(
     python_check_args = [
         "check",
         "--preview",
+        "--no-fix",
+        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",
@@ -101,6 +103,8 @@ format_multirun(
     python_fix_args = [
         "check",
         "--preview",
+        "--no-fix",
+        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",
