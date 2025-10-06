@@ -113,18 +113,28 @@ alias(
 )
 
 alias(
-    name = "format.check",
-    actual = "//tools/format:format.check",
-)
-
-alias(
     name = "fix",
     actual = "//tools/lint:fix",
 )
 
 alias(
+    name = "b.fix",
+    actual = "//tools/lint:buildifier.fix",
+)
+
+alias(
+    name = "format.check",
+    actual = "//tools/format:format.check",
+)
+
+alias(
     name = "check",
     actual = "//tools/lint:check",
+)
+
+alias(
+    name = "check_all",
+    actual = "//tools/lint:check_all",
 )
 
 alias(
@@ -172,5 +182,13 @@ py_console_script_binary(
     pkg = "@my_deps//yamllint:pkg",
     deps = [
         ":misc_deps",
+    ],
+)
+
+test_suite(
+    name = "all_format_linters",
+    tests = [
+        "//tools/format:format_test",
+        "//tools/lint:all_linters",
     ],
 )

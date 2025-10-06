@@ -3,7 +3,7 @@ bazel_dep(name = "rules_python", version = "1.6.3")
 bazel_dep(name = "rules_mypy", version = "0.40.0")
 bazel_dep(name = "aspect_rules_lint", version = "1.9.0")
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2")
-bazel_dep(name = "rules_nodejs", version = "6.5.2")
+bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # NOTE PYTHON
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")

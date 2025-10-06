@@ -65,32 +65,32 @@ repos:
   - repo: local
     # Build validation - run Bazel build before commit
     hooks:
-      - id: bazel-format-check
-        name: Bazel Format Check
-        entry: bazel run //:format.check
-        language: system
-        pass_filenames: false
-        always_run: false
-        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-        require_serial: true
-      - id: bazel-lint-check
-        name: Bazel Lint Check
-        entry: bazel run //:check
-        language: system
-        pass_filenames: false
-        always_run: false
-        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-        require_serial: true
-        verbose: true
-      - id: bazel-pylint-check
-        name: Bazel Pylint Check
-        entry: bazel run //:pylint -- ./
-        language: system
-        pass_filenames: false
-        always_run: false
-        files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-        require_serial: true
-        verbose: true
+      # - id: bazel-format-check
+      #   name: Bazel Format Check
+      #   entry: bazel run //:format.check
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: false
+      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+      #   require_serial: true
+      # - id: bazel-lint-check
+      #   name: Bazel Lint Check
+      #   entry: bazel run //:check
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: false
+      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+      #   require_serial: true
+      #   verbose: true
+      # - id: bazel-pylint-check
+      #   name: Bazel Pylint Check
+      #   entry: bazel run //:pylint -- ./
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: false
+      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
+      #   require_serial: true
+      #   verbose: true
       - id: bazel-tests
         name: Bazel Tests
         entry: bazel test //...

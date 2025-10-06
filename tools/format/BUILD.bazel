@@ -8,17 +8,21 @@ format_multirun(
     javascript_check_args = [
         "ci",
         "--colors=off",
+        "--verbose",
+        "--log-level=info",
     ],
     javascript_fix_args = [
         "format",
         "--write",
         "--colors=off",
+        "--verbose",
+        "--log-level=info",
     ],
     python = "//:ruff_bin",
     python_check_args = [
         "format",
-        "--diff",
         "--preview",
+        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",
@@ -73,12 +77,15 @@ format_test(
     javascript_check_args = [
         "ci",
         "--colors=off",
+        "--verbose",
+        "--log-level=info",
     ],
     no_sandbox = True,
     python = "//:ruff_bin",
     python_check_args = [
         "format",
         "--preview",
+        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",

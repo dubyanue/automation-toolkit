@@ -2,8 +2,8 @@
 ignore-from-file:
   - .gitignore
 yaml-files:
-  - '*.yaml'
-  - '*.yml'
+  - '**/*.yaml'
+  - '**/*.yml'
   - '.yamllint'
 rules:
   anchors: enable

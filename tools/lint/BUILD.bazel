@@ -1,5 +1,7 @@
 load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier", "buildifier_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -95,7 +97,6 @@ format_multirun(
         "check",
         "--preview",
         "--no-fix",
-        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",
@@ -104,7 +105,6 @@ format_multirun(
         "check",
         "--preview",
         "--no-fix",
-        "--diff",
         "--respect-gitignore",
         "--force-exclude",
         "--verbose",
@@ -150,9 +150,21 @@ buildifier(
         "./.git/**",
         "bazel*/**",
         ".venv/**",
+        "*cache*/**",
+        ".*cache*/**",
     ],
     lint_mode = "fix",
     mode = "fix",
+)
+
+sh_binary(
+    name = "check_all",
+    srcs = ["lint_all.sh"],
+    data = [
+        "//:check",
+        "//:format.check",
+        "//:pylint",
+    ],
 )
 
 buildifier_test(
@@ -161,4 +173,26 @@ buildifier_test(
     mode = "diff",
     no_sandbox = True,
     workspace = "//:MODULE.bazel",
+)
+
+sh_test(
+    name = "lint_test",
+    srcs = ["lint_test.sh"],
+    data = [
+        "//:biome_bin",
+        "//:buildiier_bin",
+        "//:pylint",
+        "//:ruff_bin",
+        "//:taplo_bin",
+        "//:yamllint",
+    ],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+test_suite(
+    name = "all_linters",
+    tests = [
+        ":buildifier.check",
+        ":lint_test",
+    ],
 )
