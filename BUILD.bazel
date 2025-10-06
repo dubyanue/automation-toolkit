@@ -13,8 +13,10 @@ exports_files(
         include = [
             "**/*.yaml",
             "**/*.toml",
+            "**/*.json",
             ".*.yaml",  # Add this for dotfiles
             ".*.toml",  # Add this for dotfiles
+            ".*.json",
         ],
         allow_empty = True,
         exclude = [
@@ -37,8 +39,10 @@ py_library(
             [
                 "**/*.yaml",
                 "**/*.toml",
+                "**/*.json",
                 ".*.yaml",  # Add this for dotfiles
                 ".*.toml",  # Add this for dotfiles
+                ".*.json",
             ],
             allow_empty = True,
             exclude = [
@@ -134,6 +138,11 @@ alias(
 alias(
     name = "yamlfmt_bin",
     actual = "@yamlfmt//:yamlfmt",
+)
+
+alias(
+    name = "biome_bin",
+    actual = "@biome//file:downloaded",
 )
 
 alias(

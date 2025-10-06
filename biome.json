@@ -1,0 +1,36 @@
+{
+    "files": {
+        "ignoreUnknown": true,
+        "includes": [
+            "**",
+            "!.venv",
+            "!node_modules",
+            "!.git",
+            "!.pytest_cache",
+            "!.mypy_cache",
+            "!.ruff_cache",
+            "!*bazel*"
+        ]
+    },
+    "formatter": {
+        "bracketSameLine": false,
+        "bracketSpacing": true,
+        "enabled": true,
+        "expand": "always",
+        "formatWithErrors": false,
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "json": {
+        "parser": {
+            "allowComments": true,
+            "allowTrailingCommas": false
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true
+        }
+    }
+}

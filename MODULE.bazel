@@ -3,6 +3,7 @@ bazel_dep(name = "rules_python", version = "1.6.3")
 bazel_dep(name = "rules_mypy", version = "0.40.0")
 bazel_dep(name = "aspect_rules_lint", version = "1.9.0")
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2")
+bazel_dep(name = "rules_nodejs", version = "6.5.2")
 
 # NOTE PYTHON
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
@@ -61,4 +62,13 @@ exports_files(["yamlfmt"], visibility = ["//visibility:public"])
 """,
     sha256 = "b114115b6804cfd203195d222558e4feb38e311fffb590c4e13642fa21bd0e37",
     urls = ["https://github.com/google/yamlfmt/releases/download/v0.17.2/yamlfmt_0.17.2_Linux_x86_64.tar.gz"],
+)
+
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "biome",
+    executable = True,
+    sha256 = "55194055a03ec2acd57e9e895809038226e4ccee64213031df25d5fa93fa3350",
+    url = "https://github.com/biomejs/biome/releases/download/@biomejs/biome@2.2.5/biome-linux-x64",
 )

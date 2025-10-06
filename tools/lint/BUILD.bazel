@@ -5,6 +5,19 @@ package(default_visibility = ["//visibility:public"])
 
 format_multirun(
     name = "fix",
+    javascript = "//:biome_bin",
+    javascript_check_args = [
+        "check",
+        "--write",
+        "--unsafe",
+        "--colors=off",
+    ],
+    javascript_fix_args = [
+        "check",
+        "--write",
+        "--unsafe",
+        "--colors=off",
+    ],
     python = "//:ruff_bin",
     python_check_args = [
         "check",
@@ -62,6 +75,21 @@ format_multirun(
 
 format_multirun(
     name = "check",
+    javascript = "//:biome_bin",
+    javascript_check_args = [
+        "ci",
+        "--colors=off",
+        "--linter-enabled=true",
+        "--formatter-enabled=true",
+        "--assist-enabled=false",
+    ],
+    javascript_fix_args = [
+        "ci",
+        "--colors=off",
+        "--linter-enabled=true",
+        "--formatter-enabled=true",
+        "--assist-enabled=false",
+    ],
     python = "//:ruff_bin",
     python_check_args = [
         "check",

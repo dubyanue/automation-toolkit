@@ -15,6 +15,7 @@ repos:
         verbose: true
       - id: pretty-format-json
         args:
+          - "--indent=4"
           - "--autofix"
         verbose: true
       - id: check-toml
