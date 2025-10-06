@@ -1,8 +1,11 @@
+import re
 from collections.abc import Generator
 from contextlib import contextmanager
 from logging import Logger
 from pathlib import Path
 from typing import IO, Any
+
+COMMENTRE = re.compile(r"//.*$|#.*$", re.MULTILINE)
 
 
 class FileFactory:
@@ -38,8 +41,22 @@ class FileFactory:
     def is_dir(self) -> bool:
         return self.file_path.is_dir()
 
+    def read(self, *, allow_comments: bool = True) -> str:
+        data: str = ""
+        if not self.exists():
+            raise FileNotFoundError
+        with self.open(mode="r", encoding="utf-8") as fh:
+            if not allow_comments:
+                for line in fh:
+                    data += re.sub(COMMENTRE, "", line)
+            else:
+                data = fh.read()
+        return data
+
     @contextmanager
-    def open(self, mode: str = "r", create_mode: int = 0o777) -> Generator[IO[Any]]:
+    def open(
+        self, mode: str = "r", create_mode: int = 0o777, encoding: str = "utf-8"
+    ) -> Generator[IO[Any]]:
         """
         Context manager for opening the file.
         Usage: with file_factory.open('w') as f: ...
@@ -48,7 +65,7 @@ class FileFactory:
             self.create(create_mode)
 
         try:
-            with self.file_path.open(mode) as file_handle:
+            with self.file_path.open(mode=mode, encoding=encoding) as file_handle:
                 self.is_open = True
                 yield file_handle
         except Exception:

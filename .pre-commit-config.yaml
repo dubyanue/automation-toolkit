@@ -3,7 +3,7 @@ default_install_hook_types: [pre-commit, pre-push, commit-msg]
 repos:
   # General file cleanup
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         verbose: true
@@ -28,7 +28,7 @@ repos:
         verbose: true
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.13.2
+    rev: v0.13.3
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -58,6 +58,7 @@ repos:
         additional_dependencies:
           - pylint-plugin-utils
           - pylint-pytest
+          - pylint-pydantic
         entry: >
           bash -c 'PYTHONWARNINGS="ignore:pkg_resources is deprecated" pylint
           "$@"' --

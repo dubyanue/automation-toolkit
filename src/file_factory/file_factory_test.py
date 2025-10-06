@@ -55,6 +55,24 @@ def test_read_write(file_factory: FileFactory) -> None:
         assert file_f.is_open is True
 
 
+def test_read(file_factory: FileFactory) -> None:
+    file_f: FileFactory
+    test_str: str = "Basic test string"
+    file_f = file_factory
+    with file_f.open("w") as fh:
+        fh.write(test_str)
+    data: str = file_f.read()
+    assert data == test_str
+
+
+def test_read_with_comments(file_factory: FileFactory) -> None:
+    file_f: FileFactory
+    file_f = file_factory
+    with file_f.open("w") as fh:
+        fh.write('{"test": "yes","test2": "no",// "test3": "commented"\n}')
+    assert file_f.read(allow_comments=False) == '{"test": "yes","test2": "no",\n}'
+
+
 if __name__ == "__main__":
     import sys
 

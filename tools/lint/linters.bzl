@@ -4,7 +4,6 @@ This file declares linter aspects using the aspect rules_lint framework.
 Source: https://github.com/aspect-build/rules_lint/blob/main/docs/linting.md
 """
 
-load("@aspect_rules_lint//lint:lint_test.bzl", "lint_test")
 load("@aspect_rules_lint//lint:ruff.bzl", "lint_ruff_aspect")
 
 # Ruff linter configuration
@@ -21,7 +20,3 @@ ruff = lint_ruff_aspect(
         "py_test",
     ],
 )
-
-# Create a test version of ruff that can be used with bazel test
-# Source: https://github.com/aspect-build/rules_lint/blob/main/docs/lint_test.md
-ruff_test = lint_test(aspect = ruff)

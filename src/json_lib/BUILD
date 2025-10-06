@@ -1,10 +1,9 @@
 load("@rules_python//python:defs.bzl", "py_library")
-load("//macros:pytest_macros.bzl", "custom_py_test")
 
 package(default_visibility = ["//visibility:public"])
 
 py_library(
-    name = "file_lib",
+    name = "json_lib",
     srcs = glob(
         include = ["*.py"],
         exclude = [
@@ -14,16 +13,6 @@ py_library(
     ),
     deps = [
         "//:misc_deps",
-    ],
-)
-
-custom_py_test(
-    name = "file_tests",
-    srcs = glob(
-        ["*_test.py"],
-    ),
-    deps = [
-        ":file_lib",
-        "//:py_test_deps",
+        "//src/file_factory:file_lib",
     ],
 )
