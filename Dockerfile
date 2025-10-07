@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.13
 
 # Avoid interactive prompts during install
 ENV DEBIAN_FRONTEND=noninteractive
@@ -8,7 +8,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV USERNAME=user
 ENV HOME=/logs/work/${USERNAME}
 
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && \
+    apt-get install software-properties-common -y
+
+RUN add-apt-repository ppa:deadsnakes/ppa -y && \
+    apt-get update && \
+    apt-get install -y sudo
 
 RUN useradd -ms /bin/bash ${USERNAME} && \
     usermod -aG sudo ${USERNAME}
@@ -37,8 +42,9 @@ RUN apt-get install -y \
     vim \
     ca-certificates \
     gnupg \
-    python3.11-dev \
-    python3.11-venv \
+    python3.13 \
+    python3.13-dev \
+    python3.13-venv \
     libffi-dev \
     less \
     gfortran \

@@ -3,7 +3,7 @@
 
 load("@rules_python//python:defs.bzl", "py_test")
 
-def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):
+def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [], **kwargs):
     common_args = [
         # "--capture=no",
         # "-n logical",
@@ -17,6 +17,7 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):
         # "--cov-report=html:coverage_html",
         # "-s",
         "-rfExP",
+        "-vv",
         # "--capture=no",
     ]
 
@@ -24,6 +25,9 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], **kwargs):
         name = name,
         main = "//macros:pytest_wrapper.py",
         srcs = srcs + ["//macros:pytest_wrapper.py"],
+        aspect_hints = aspect_hints + [
+            "@aspect_rules_lint//lint:ruff_bin",
+        ],
         deps = deps,
         data = data,
         args = common_args + args,  # Allows extra args if needed

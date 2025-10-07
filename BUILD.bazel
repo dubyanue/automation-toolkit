@@ -71,6 +71,7 @@ py_library(
             "pluggy",
             "pygments",
             "pytz",
+            "mypy",
             "ruff",
             "soupsieve",
             "decorator",
@@ -171,8 +172,7 @@ py_console_script_binary(
     pkg = "@my_deps//pylint:pkg",
     deps = [
         ":misc_deps",
-        "//src/file_factory:file_lib",
-        "//src/logger:logger_lib",
+        "//lib/file_libs:file_lib",
     ],
 )
 
@@ -180,6 +180,15 @@ py_console_script_binary(
     name = "yamllint",
     binary_rule = py_binary,
     pkg = "@my_deps//yamllint:pkg",
+    deps = [
+        ":misc_deps",
+    ],
+)
+
+py_console_script_binary(
+    name = "mypy",
+    binary_rule = py_binary,
+    pkg = "@my_deps//mypy:pkg",
     deps = [
         ":misc_deps",
     ],

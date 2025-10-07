@@ -42,9 +42,9 @@ else
 fi
 
 echo "Running pylint (no cache for sandbox)..."
-./pylint --persistent=no src/
+./pylint --persistent=no ./
 
 echo "Running yamllint..."
-./yamllint --strict --format=github src/
+./yamllint --strict --format=github ./
 
 echo "All linters passed!"

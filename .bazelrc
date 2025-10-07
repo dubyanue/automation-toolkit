@@ -35,4 +35,8 @@ query --order_output=full
 build --aspects=//tools/lint:linters.bzl%ruff
 build --@aspect_rules_lint//lint:fail_on_violation
 build --@aspect_rules_lint//lint:debug
+
+# build --aspects=//tools/lint:linters.bzl%mypy_aspect
+# build --output_groups=+mypy
+
 #####################################################

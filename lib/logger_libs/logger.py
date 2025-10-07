@@ -2,7 +2,7 @@ import logging
 import pathlib
 import sys
 
-from src.logger.log_formatter import get_formatter
+from lib.logger_libs.log_formatter import get_formatter
 
 
 class BasicLogger(logging.Logger):

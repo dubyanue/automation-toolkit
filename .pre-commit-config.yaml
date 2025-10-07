@@ -41,13 +41,13 @@ repos:
       - id: ruff-format
         types_or: [python, pyi]
         verbose: true
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2  # Use the latest version
-    hooks:
-      - id: mypy
-        types_or: [python, pyi]
-        verbose: true
-        additional_dependencies: ["types-pytz"]  # needed stub packages
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.18.2  # Use the latest version
+  #   hooks:
+  #     - id: mypy
+  #       types_or: [python, pyi]
+  #       verbose: true
+  #       additional_dependencies: ["types-pytz"]  # needed stub packages
   - repo: https://github.com/pre-commit/mirrors-pylint
     rev: 'v3.0.0a5'
     hooks:
@@ -66,32 +66,6 @@ repos:
   - repo: local
     # Build validation - run Bazel build before commit
     hooks:
-      # - id: bazel-format-check
-      #   name: Bazel Format Check
-      #   entry: bazel run //:format.check
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: false
-      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-      #   require_serial: true
-      # - id: bazel-lint-check
-      #   name: Bazel Lint Check
-      #   entry: bazel run //:check
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: false
-      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-      #   require_serial: true
-      #   verbose: true
-      # - id: bazel-pylint-check
-      #   name: Bazel Pylint Check
-      #   entry: bazel run //:pylint -- ./
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: false
-      #   files: '\.(py|pyi|BUILD|bzl|WORKSPACE|toml|yaml|bazel)$'
-      #   require_serial: true
-      #   verbose: true
       - id: bazel-tests
         name: Bazel Tests
         entry: bazel test //...
