@@ -5,9 +5,11 @@ package(default_visibility = ["//visibility:public"])
 py_library(
     name = "logger_lib",
     srcs = glob(
-        include = ["*.py"],
-        exclude = [
-            "*_test.py",
-        ],
+        include = ["**/*.py"],
+        allow_empty = True,
+        exclude = ["main.py"],
     ),
+    deps = [
+        "//:misc_deps",
+    ],
 )

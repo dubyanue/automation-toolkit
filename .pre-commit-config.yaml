@@ -41,28 +41,6 @@ repos:
       - id: ruff-format
         types_or: [python, pyi]
         verbose: true
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.18.2  # Use the latest version
-  #   hooks:
-  #     - id: mypy
-  #       types_or: [python, pyi]
-  #       verbose: true
-  #       additional_dependencies: ["types-pytz"]  # needed stub packages
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: 'v3.0.0a5'
-    hooks:
-      - id: pylint
-        types_or: [python, pyi]
-        language: python
-        verbose: true
-        additional_dependencies:
-          - pylint-plugin-utils
-          - pylint-pytest
-          - pylint-pydantic
-        entry: >
-          bash -c 'PYTHONWARNINGS="ignore:pkg_resources is deprecated" pylint
-          "$@"' --
-
   - repo: local
     # Build validation - run Bazel build before commit
     hooks:

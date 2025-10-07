@@ -5,7 +5,9 @@ package(default_visibility = ["//visibility:public"])
 py_library(
     name = "file_lib",
     srcs = glob(
-        include = ["*.py"],
+        include = ["**/*.py"],
+        allow_empty = True,
+        exclude = ["main.py"],
     ),
     deps = [
         "//:misc_deps",

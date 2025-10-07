@@ -11,12 +11,22 @@ exports_files(
         "MODULE.bazel",
     ] + glob(
         include = [
+            "scripts/**",
+        ],
+        allow_empty = True,
+    ),
+)
+
+filegroup(
+    name = "config_files",
+    srcs = glob(
+        include = [
             "**/*.yaml",
+            "**/.*.yaml",
             "**/*.toml",
+            "**/.*.toml",
             "**/*.json",
-            ".*.yaml",  # Add this for dotfiles
-            ".*.toml",  # Add this for dotfiles
-            ".*.json",
+            "**/.*.json",
         ],
         allow_empty = True,
         exclude = [
@@ -28,32 +38,16 @@ exports_files(
     ),
 )
 
+filegroup(
+    name = "all_files",
+    srcs = [
+        ":config_files",
+        "//lib:libs",
+    ],
+)
+
 py_library(
     name = "misc_deps",
-    srcs = [],
-    data = [
-        "//:.gitignore",
-        "//:MODULE.bazel",
-    ] + [
-        "//:{}".format(f)
-        for f in glob(
-            [
-                "**/*.yaml",
-                "**/*.toml",
-                "**/*.json",
-                ".*.yaml",  # Add this for dotfiles
-                ".*.toml",  # Add this for dotfiles
-                ".*.json",
-            ],
-            allow_empty = True,
-            exclude = [
-                ".venv/**",
-                "*bazel-*/**",
-                "*cache*/**",
-                ".*cache*/**",
-            ],
-        )
-    ],
     deps = [
         "@my_deps//{}".format(f)
         for f in [
@@ -169,10 +163,13 @@ alias(
 py_console_script_binary(
     name = "pylint",
     binary_rule = py_binary,
+    data = [
+        "//:.gitignore",
+        "//:all_files",
+    ],
     pkg = "@my_deps//pylint:pkg",
     deps = [
         ":misc_deps",
-        "//lib/file_libs:file_lib",
     ],
 )
 

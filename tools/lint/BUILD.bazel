@@ -159,7 +159,7 @@ buildifier(
 
 sh_binary(
     name = "check_all",
-    srcs = ["lint_all.sh"],
+    srcs = ["//:scripts/lint_all.sh"],
     data = [
         "//:check",
         "//:format.check",
@@ -177,14 +177,16 @@ buildifier_test(
 
 sh_test(
     name = "lint_test",
-    srcs = ["lint_test.sh"],
+    srcs = ["//:scripts/lint_test.sh"],
     data = [
+        "//:all_files",
         "//:biome_bin",
         "//:buildiier_bin",
         "//:pylint",
         "//:ruff_bin",
         "//:taplo_bin",
         "//:yamllint",
+        "//lib:libs",
     ],
     deps = ["@bazel_tools//tools/bash/runfiles"],
 )
