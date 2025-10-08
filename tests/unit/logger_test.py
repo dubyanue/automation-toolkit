@@ -31,6 +31,26 @@ def test_basic_logger(common_file_factory_fixture_: FileFactory) -> None:
     assert re.match(matchstr, file_f.read())
 
 
+def test_basic_logger_stdout(capsys: pytest.CaptureFixture[str]) -> None:
+    logger_name: str = "TestStdoutLogger"
+    log_level: int = logging.INFO
+    # No logfile provided - should use stdout
+    test_logger: logging.Logger = logger.get_logger(logger_name, log_level, None)
+    assert test_logger.level is logging.INFO
+
+    log_msg: str = "This is a stdout test log"
+    test_logger.info(log_msg)
+
+    captured = capsys.readouterr()
+    matchstr = (
+        rf"\d{{4}}-\d{{2}}-\d{{2}} \d{{2}}:\d{{2}}:\d{{2}}\.\d+::"
+        rf"{logging.getLevelName(log_level)}::MainThread::"
+        rf"{Path(__file__).name}::{test_basic_logger_stdout.__name__}::"
+        rf"\d+::{logger_name}::{log_msg}"
+    )
+    assert re.match(matchstr, captured.out.strip())
+
+
 if __name__ == "__main__":
     import sys
 

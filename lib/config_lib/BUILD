@@ -1,0 +1,17 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "config_lib",
+    srcs = glob(
+        include = ["**/*.py"],
+        allow_empty = True,
+        exclude = ["main.py"],
+    ),
+    deps = [
+        "//:misc_deps",
+        "//lib/file_lib",
+        "//lib/logger_lib",
+    ],
+)
