@@ -176,25 +176,28 @@ buildifier_test(
 )
 
 sh_test(
-    name = "lint_test",
+    name = "lint_test_",
     srcs = ["//:scripts/lint_test.sh"],
     data = [
         "//:all_files",
         "//:biome_bin",
         "//:buildiier_bin",
+        "//:mypy",
         "//:pylint",
         "//:ruff_bin",
         "//:taplo_bin",
         "//:yamllint",
         "//lib:libs",
     ],
-    deps = ["@bazel_tools//tools/bash/runfiles"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
 )
 
 test_suite(
-    name = "all_linters",
+    name = "lint_test",
     tests = [
-        ":buildifier.check",
-        ":lint_test",
+        ":buildifier.check",  # buildifier specific
+        ":lint_test_",  # biome, taplo, yamllint, mypy, ruff, pylint
     ],
 )

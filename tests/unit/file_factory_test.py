@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 
 import pytest
 
-from lib.file_libs.file_factory import FileFactory
+from lib.file_lib.file_factory import FileFactory
 
 
 @pytest.fixture(name="file_factory")

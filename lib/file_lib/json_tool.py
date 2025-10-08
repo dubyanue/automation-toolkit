@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from lib.file_libs.file_factory import FileFactory
+from lib.file_lib.file_factory import FileFactory
 
 
 def json_read(file: str | FileFactory) -> dict[str, Any]:

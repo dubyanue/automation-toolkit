@@ -5,6 +5,7 @@ load("@rules_python//python:defs.bzl", "py_test")
 
 def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [], **kwargs):
     common_args = [
+        "--mypy",
         # "--capture=no",
         # "-n logical",
         "--tb=long",
@@ -29,7 +30,7 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [
             "@aspect_rules_lint//lint:ruff_bin",
         ],
         deps = deps,
-        data = data,
+        data = data + ["//:config_files"],
         args = common_args + args,  # Allows extra args if needed
         **kwargs
     )

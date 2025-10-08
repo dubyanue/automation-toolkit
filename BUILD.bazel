@@ -42,7 +42,7 @@ filegroup(
     name = "all_files",
     srcs = [
         ":config_files",
-        "//lib:libs",
+        "//tests:test_files",
     ],
 )
 
@@ -65,6 +65,7 @@ py_library(
             "pluggy",
             "pygments",
             "pytz",
+            "types_pytz",
             "mypy",
             "ruff",
             "soupsieve",
@@ -98,6 +99,8 @@ py_library(
             "pytest_html",
             "pytest_html_merger",
             "pytest_metadata",
+            "pytest_mypy",
+            "pytest_sugar",
         ]
     ],
 )
@@ -188,13 +191,14 @@ py_console_script_binary(
     pkg = "@my_deps//mypy:pkg",
     deps = [
         ":misc_deps",
+        ":py_test_deps",
     ],
 )
 
 test_suite(
-    name = "all_format_linters",
+    name = "fmt_lint_test",
     tests = [
         "//tools/format:format_test",
-        "//tools/lint:all_linters",
+        "//tools/lint:lint_test",
     ],
 )

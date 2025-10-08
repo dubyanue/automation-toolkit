@@ -5,8 +5,8 @@ from typing import Any
 
 import pytest
 
-from lib.file_libs.file_factory import FileFactory
-from lib.file_libs.json_tool import json_read, json_write
+from lib.file_lib.file_factory import FileFactory
+from lib.file_lib.json_tool import json_read, json_write
 
 
 @pytest.fixture(name="file_factory")

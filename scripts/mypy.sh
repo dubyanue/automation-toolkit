@@ -10,4 +10,4 @@ find . -name "*.py" \
     -not -path "./bazel-*/*" \
     -not -path "./*cache*/*" \
     -not -path "./.*cache*/*" \
-    | xargs python -m mypy --explicit-package-bases
+    | xargs python -m mypy --strict
