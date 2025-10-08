@@ -1,4 +1,4 @@
-FROM python:3.13
+FROM python:3.12
 
 # Avoid interactive prompts during install
 ENV DEBIAN_FRONTEND=noninteractive
@@ -42,9 +42,9 @@ RUN apt-get install -y \
     vim \
     ca-certificates \
     gnupg \
-    python3.13 \
-    python3.13-dev \
-    python3.13-venv \
+    python3.12 \
+    python3.12-dev \
+    python3.12-venv \
     libffi-dev \
     less \
     gfortran \
@@ -74,8 +74,8 @@ RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor -o /usr
 ########################################################
 
 
-RUN python3.11 -m pip install --upgrade pip setuptools wheel cython && \
-    python3.11 -m pip install -r requirements.txt && \
+RUN python3.12 -m pip install --upgrade pip setuptools wheel cython && \
+    python3.12 -m pip install -r requirements.txt && \
     pre-commit install
 
 USER ${USERNAME}
