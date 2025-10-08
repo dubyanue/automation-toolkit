@@ -6,6 +6,8 @@ load("@rules_python//python:defs.bzl", "py_test")
 def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [], **kwargs):
     common_args = [
         "--mypy",
+        "--ruff",
+        "--ruff-format",
         # "--capture=no",
         # "-n logical",
         "--tb=long",

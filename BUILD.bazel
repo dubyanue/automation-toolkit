@@ -101,6 +101,7 @@ py_library(
             "pytest_metadata",
             "pytest_mypy",
             "pytest_sugar",
+            "pytest_ruff",
         ]
     ],
 )

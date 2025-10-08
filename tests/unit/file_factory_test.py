@@ -1,35 +1,23 @@
-from collections.abc import Generator
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 import pytest
 
 from lib.file_lib.file_factory import FileFactory
 
-
-@pytest.fixture(name="file_factory")
-def fixture_file_factory() -> Generator[FileFactory]:
-    # Setup
-    with NamedTemporaryFile(mode="w+", delete=False, encoding="utf-8") as tmp:
-        filename_: str = tmp.name
-
-    file_factory_: FileFactory = FileFactory(filename_)
-    yield file_factory_
-
-    if (file_path := Path(filename_)).exists():
-        file_path.unlink(missing_ok=True)
+# pylint: disable-next=unused-import
+from lib.test_lib.test_fixures import common_file_factory_fixture
 
 
-def test_basic_file_factory(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_basic_file_factory(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     assert file_f.is_open is False
     assert file_f.is_file() is True
     assert isinstance(file_f, Path)
     assert file_f.exists() is True
 
 
-def test_delete_create(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_delete_create(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     assert file_f.is_open is False
     assert file_f.exists() is True
     assert file_f.delete() is True
@@ -38,10 +26,10 @@ def test_delete_create(file_factory: FileFactory) -> None:
     assert file_f.exists() is True
 
 
-def test_read_write(file_factory: FileFactory) -> None:
+def test_read_write(common_file_factory_fixture_: FileFactory) -> None:
     file_f: FileFactory
     test_str: str = "Who the hell do you think I am!?\n"
-    file_f = file_factory
+    file_f = common_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write(test_str)
         assert file_f.is_open is True
@@ -53,33 +41,33 @@ def test_read_write(file_factory: FileFactory) -> None:
         assert file_f.is_open is True
 
 
-def test_read(file_factory: FileFactory) -> None:
+def test_read(common_file_factory_fixture_: FileFactory) -> None:
     file_f: FileFactory
     test_str: str = "Basic test string"
-    file_f = file_factory
+    file_f = common_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write(test_str)
     data: str = file_f.read()
     assert data == test_str
 
 
-def test_read_disallow_comments(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_read_disallow_comments(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write('{"test": "yes","test2": "no",// "test3": "commented"\n}')
     assert file_f.read(allow_comments=False) == '{"test": "yes","test2": "no",\n}'
 
 
-def test_read_allow_comments(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_read_allow_comments(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     data: str = '{"test": "yes","test2": "no",// "test3": "commented"\n}'
     with file_f._open("w") as fh:
         fh.write(data)
     assert file_f.read(allow_comments=True) == data
 
 
-def test_readlines_disallow_comments(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_readlines_disallow_comments(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write('{"test": "yes",\n"test2": "no",\n// "test3": "commented"\n}')
 
@@ -87,8 +75,8 @@ def test_readlines_disallow_comments(file_factory: FileFactory) -> None:
     assert file_f.readlines(allow_comments=False) == expected
 
 
-def test_readlines_allow_comments(file_factory: FileFactory) -> None:
-    file_f: FileFactory = file_factory
+def test_readlines_allow_comments(common_file_factory_fixture_: FileFactory) -> None:
+    file_f: FileFactory = common_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write('{"test": "yes",\n"test2": "no",\n// "test3": "commented"\n}')
 

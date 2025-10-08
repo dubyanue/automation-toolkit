@@ -18,7 +18,6 @@ def test_basic_logger(common_file_factory_fixture_: FileFactory) -> None:
     test_logger: logging.Logger = logger.get_logger(logger_name, log_level, str(file_f))
     assert test_logger.level is logging.INFO
     log_msg: str = "This is a test log"
-    # NOTE: Should not write as in INFO
     test_logger.debug(log_msg)
     assert not file_f.read()
 
@@ -29,7 +28,7 @@ def test_basic_logger(common_file_factory_fixture_: FileFactory) -> None:
         rf"{Path(__file__).name}::{test_basic_logger.__name__}::"
         rf"\d+::{logger_name}::{log_msg}"
     )
-    assert re.search(matchstr, file_f.read())
+    assert re.match(matchstr, file_f.read())
 
 
 if __name__ == "__main__":
