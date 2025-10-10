@@ -1,0 +1,9 @@
+{
+    "python.testing.pytestArgs": [
+        "tests",
+        "--mypy",
+        "--ruff"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false
+}

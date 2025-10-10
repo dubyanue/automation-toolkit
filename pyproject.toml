@@ -109,12 +109,7 @@ known-first-party = ["lib"]
 [tool.ruff.lint.per-file-ignores]
 "**/*_pb2.py" = ["ALL"]
 "**/*_pb2_grpc.py" = ["ALL"]
-"**/*_test.py" = ["F401"]
-
-# Allow use of assert in test files and disable pytest fixture return/yield conversion
-"*test*.py" = ["S101", "RET504"]
-"test_*.py" = ["S101", "RET504"]
-"*_test.py" = ["S101", "RET504"]
+"**/{*_test,test_*}.py" = ["F401", "S101", "RET504"]
 
 [tool.pylint.main]
 ignore-paths = [

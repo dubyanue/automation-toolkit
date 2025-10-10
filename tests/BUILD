@@ -5,7 +5,10 @@ package(default_visibility = ["//visibility:public"])
 filegroup(
     name = "unittest_files",
     srcs = glob(
-        include = ["unit/*_test.py"],
+        include = [
+            "**/*_test.py",
+            "**/test_*.py",
+        ],
         allow_empty = True,
     ),
 )
@@ -13,7 +16,10 @@ filegroup(
 filegroup(
     name = "non_unittest_files",
     srcs = glob(
-        include = ["**/*_test.py"],
+        include = [
+            "**/*_test.py",
+            "**/test_*.py",
+        ],
         allow_empty = True,
         exclude = ["unit/**"],
     ),
