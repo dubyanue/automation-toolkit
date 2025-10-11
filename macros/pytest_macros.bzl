@@ -21,7 +21,6 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [
         # "-s",
         "-rfExP",
         "-vv",
-        # "--capture=no",
     ]
 
     py_test(

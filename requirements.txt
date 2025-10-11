@@ -54,6 +54,7 @@ scipy==1.16.2
 pystoi==0.4.1
 mir-eval==0.8.2
 pesq==0.0.4
+sqlalchemy==2.0.44
 einops==0.8.1
 cached-property==2.0.1
 pb-bss-eval==0.0.2

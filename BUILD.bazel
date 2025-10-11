@@ -95,13 +95,13 @@ py_library(
         "@my_deps//{}".format(f)
         for f in [
             "pytest",
+            "pytest_ruff",
             "pytest_cov",
             "pytest_html",
             "pytest_html_merger",
             "pytest_metadata",
             "pytest_mypy",
             "pytest_sugar",
-            "pytest_ruff",
         ]
     ],
 )

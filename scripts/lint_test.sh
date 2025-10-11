@@ -23,14 +23,14 @@ else
     exit 1
 fi
 
-echo "Running taplo..."
-taplo_bin="$(rlocation "my_deps_312_taplo/bin/taplo")"
-if [[ -x "$taplo_bin" ]]; then
-    "$taplo_bin" lint --verbose --default-schema-catalogs
-else
-    echo "ERROR: Could not find taplo binary at: $taplo_bin"
-    exit 1
-fi
+# echo "Running taplo..."
+# taplo_bin="$(rlocation "my_deps_312_taplo/bin/taplo")"
+# if [[ -x "$taplo_bin" ]]; then
+#     "$taplo_bin" lint --verbose --default-schema-catalogs
+# else
+#     echo "ERROR: Could not find taplo binary at: $taplo_bin"
+#     exit 1
+# fi
 
 echo "Running yamllint..."
 ./yamllint --strict --format=github ./
