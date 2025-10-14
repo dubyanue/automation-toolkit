@@ -1,6 +1,3 @@
-from collections.abc import Generator
-from pathlib import Path
-from tempfile import NamedTemporaryFile
 from typing import Any
 
 import pytest
@@ -8,41 +5,29 @@ import pytest
 from lib.file_lib.file_factory import FileFactory
 from lib.file_lib.json_tool import json_read, json_write
 
-
-@pytest.fixture(name="file_factory")
-def fixture_file_factory() -> Generator[tuple[FileFactory, str, dict[str, Any]]]:
-    # Setup
-    test_json: str = '{"key1":"val1","key2":1,"key3":true}'
-    test_dict: dict[str, Any] = {"key1": "val1", "key2": 1, "key3": True}
-    with NamedTemporaryFile(
-        mode="w+", delete=False, encoding="utf-8", suffix=".json"
-    ) as tmp:
-        filename_: str = tmp.name
-
-    file_factory_: FileFactory = FileFactory(filename_)
-    yield (file_factory_, test_json, test_dict)
-
-    if (file_path := Path(filename_)).exists():
-        file_path.unlink(missing_ok=True)
+# pylint: disable-next=unused-import
+from lib.test_lib.test_fixures import json_file_factory_fixture
 
 
-def test_json_read(file_factory: tuple[FileFactory, str, dict[str, Any]]) -> None:
+def test_json_read(
+    json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
+) -> None:
     test_json: str
     test_dict: dict[str, Any]
     file_f: FileFactory
-    file_f, test_json, test_dict = file_factory
+    file_f, test_json, test_dict = json_file_factory_fixture_
     with file_f._open("w") as fh:
         fh.write(test_json)
     assert json_read(file_f) == test_dict
 
 
 def test_json_read_with_comments(
-    file_factory: tuple[FileFactory, str, dict[str, Any]],
+    json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
 ) -> None:
     test_json: str
     test_dict: dict[str, Any]
     file_f: FileFactory
-    file_f, test_json, test_dict = file_factory
+    file_f, test_json, test_dict = json_file_factory_fixture_
     test_json = test_json.replace(
         r'"key2":1,"key3":true}', '// This is a comment\n"key2":1,"key3":true}'
     )
@@ -51,11 +36,13 @@ def test_json_read_with_comments(
     assert json_read(file_f) == test_dict
 
 
-def test_json_write(file_factory: tuple[FileFactory, str, dict[str, Any]]) -> None:
+def test_json_write(
+    json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
+) -> None:
     test_json: str
     test_dict: dict[str, Any]
     file_f: FileFactory
-    file_f, test_json, test_dict = file_factory
+    file_f, test_json, test_dict = json_file_factory_fixture_
     json_write(test_dict, file_f, None, sort_keys=False)
     assert file_f.read() == test_json
 

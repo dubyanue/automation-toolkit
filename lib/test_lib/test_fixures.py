@@ -1,6 +1,7 @@
 from collections.abc import Generator
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+from typing import Any
 
 import pytest
 
@@ -14,6 +15,23 @@ def common_file_factory_fixture() -> Generator[FileFactory]:
 
     file_factory_: FileFactory = FileFactory(filename_)
     yield file_factory_
+
+    if (file_path := Path(filename_)).exists():
+        file_path.unlink(missing_ok=True)
+
+
+@pytest.fixture(name="json_file_factory_fixture_")
+def json_file_factory_fixture() -> Generator[tuple[FileFactory, str, dict[str, Any]]]:
+    # Setup
+    test_json: str = '{"key1":"val1","key2":1,"key3":true}'
+    test_dict: dict[str, Any] = {"key1": "val1", "key2": 1, "key3": True}
+    with NamedTemporaryFile(
+        mode="w+", delete=False, encoding="utf-8", suffix=".json"
+    ) as tmp:
+        filename_: str = tmp.name
+
+    file_factory_: FileFactory = FileFactory(filename_)
+    yield (file_factory_, test_json, test_dict)
 
     if (file_path := Path(filename_)).exists():
         file_path.unlink(missing_ok=True)
