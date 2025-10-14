@@ -6,7 +6,9 @@ from lib.file_lib.json_tool import json_read, json_write
 
 
 class ConfigurationBase:
-    def __init__(self, filename: str | FileFactory, logger: Logger | None) -> None:
+    def __init__(
+        self, filename: str | FileFactory, logger: Logger | None = None
+    ) -> None:
         self.file = FileFactory(filename) if isinstance(filename, str) else filename
         self.__logger = logger
         self.check_exists()
@@ -27,12 +29,17 @@ class ConfigurationBase:
 
 
 class JsonConfiguration(ConfigurationBase):
-    def __init__(self, filename: str | FileFactory, logger: Logger | None) -> None:
+    def __init__(
+        self, filename: str | FileFactory, logger: Logger | None = None
+    ) -> None:
         super().__init__(filename, logger)
-        self.configs: dict[str, Any] = {}
+        self.__configs: dict[str, Any] = {}
 
-    def load_configs(self) -> dict[str, Any]:
-        return json_read(self.file)
+    def load_configs(self) -> None:
+        self.__configs = json_read(self.file)
 
-    def save_configs(self) -> None:
-        json_write(self.configs, self.file)
+    def save_configs(self, configs: dict[Any, Any]) -> None:
+        json_write(configs, self.file)
+
+    def get_configs(self) -> dict[Any, Any]:
+        return self.__configs
