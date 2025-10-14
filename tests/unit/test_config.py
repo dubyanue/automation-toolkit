@@ -10,9 +10,8 @@ from lib.test_lib.test_fixures import json_file_factory_fixture
 
 
 def test_raise_file_not_found() -> None:
-    filename = "test.json"
     with pytest.raises(FileNotFoundError):
-        config.ConfigurationBase(filename)
+        config.ConfigurationBase("test.json")
 
 
 def test_file_exists(
