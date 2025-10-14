@@ -49,7 +49,7 @@ repos:
         verbose: true
         additional_dependencies: ["types-pytz"]  # needed stub packages
   - repo: https://github.com/pylint-dev/pylint
-    rev: 'v3.3.9'
+    rev: 'v4.0.0'
     hooks:
       - id: pylint
         types_or: [python, pyi]
