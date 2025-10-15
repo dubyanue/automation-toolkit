@@ -10,7 +10,7 @@ class ConfigurationBase:
         self, filename: str | FileFactory, logger: Logger | None = None
     ) -> None:
         self.file = FileFactory(filename) if isinstance(filename, str) else filename
-        self.__logger = logger
+        self._logger = logger
         self.check_exists()
 
     def check_exists(self) -> bool:
@@ -18,8 +18,8 @@ class ConfigurationBase:
         if self.file.exists():
             result = True
         else:
-            if self.__logger:
-                self.__logger.error("File: %s not found!", self.file)
+            if self._logger:
+                self._logger.error("File: %s not found!", self.file)
             raise FileNotFoundError
 
         return result
@@ -34,6 +34,7 @@ class JsonConfiguration(ConfigurationBase):
     ) -> None:
         super().__init__(filename, logger)
         self.__configs: dict[str, Any] = {}
+        self.is_json()
 
     def load_configs(self) -> None:
         self.__configs = json_read(self.file)
@@ -43,3 +44,10 @@ class JsonConfiguration(ConfigurationBase):
 
     def get_configs(self) -> dict[Any, Any]:
         return self.__configs
+
+    def is_json(self) -> None:
+        if self.get_extension() != ".json":
+            message: str = f"File: {self.file} is not a .json file."
+            if self._logger:
+                self._logger.error(message)
+            raise OSError(message)

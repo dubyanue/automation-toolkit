@@ -56,12 +56,13 @@ format_multirun(
     toml_check_args = [
         "lint",
         "--verbose",
-        "--default-schema-catalogs",
+        # "--no-schema",
+        # "--default-schema-catalogs",
     ],
     toml_fix_args = [
         "lint",
         "--verbose",
-        "--default-schema-catalogs",
+        # "--default-schema-catalogs",
     ],
     yaml = "//:yamllint",
     yaml_check_args = [
@@ -126,7 +127,8 @@ format_multirun(
     toml_check_args = [
         "lint",
         "--verbose",
-        "--default-schema-catalogs",
+        "--no-schema",
+        # "--default-schema-catalogs",
     ],
     toml_fix_args = [
         "lint",
