@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from lib.dbc_lib.dbc_utils import QueryKwargs
 from lib.file_lib.file_factory import FileFactory
 
 
@@ -35,3 +36,11 @@ def json_file_factory_fixture() -> Generator[tuple[FileFactory, str, dict[str, A
 
     if (file_path := Path(filename_)).exists():
         file_path.unlink(missing_ok=True)
+
+
+@pytest.fixture(name="basic_dbc_criteria_fixture_")
+def basic_dbc_criteria_fixture() -> QueryKwargs:
+    test_columns: list[str] = ["Col1", "Col2", "Col3"]
+    test_criteria: list[str] = ["Col1='Val1'", "Col2='Val2'"]
+    test_additionals: list[str] = ["ORDER BY Col1 DESC", "Col2 ASC"]
+    return QueryKwargs(test_columns, test_criteria, test_additionals)

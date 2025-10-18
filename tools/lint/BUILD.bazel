@@ -128,12 +128,10 @@ format_multirun(
         "lint",
         "--verbose",
         "--no-schema",
-        # "--default-schema-catalogs",
     ],
     toml_fix_args = [
         "lint",
         "--verbose",
-        "--default-schema-catalogs",
     ],
     yaml = "//:yamllint",
     yaml_check_args = [

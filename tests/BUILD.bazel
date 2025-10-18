@@ -6,8 +6,8 @@ filegroup(
     name = "unittest_files",
     srcs = glob(
         include = [
-            "**/*_test.py",
-            "**/test_*.py",
+            "unit/*_test.py",
+            "unit/test_*.py",
         ],
         allow_empty = True,
     ),
