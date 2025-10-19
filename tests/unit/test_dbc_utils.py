@@ -76,3 +76,8 @@ def test_create_placeholders(
 def test_columnize_not_columnized() -> None:
     col = "Column1"
     assert dbc_utils.columnize(col) == "[Column1]"
+
+
+def test_columnize() -> None:
+    col = "[Column1]"
+    assert dbc_utils.columnize(col) == col
