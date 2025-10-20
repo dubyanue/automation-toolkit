@@ -11,6 +11,5 @@ py_library(
     ),
     deps = [
         "//:misc_deps",
-        "//:py_test_deps",
     ],
 )

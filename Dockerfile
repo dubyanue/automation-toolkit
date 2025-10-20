@@ -55,6 +55,7 @@ RUN apt-get install -y \
     clang \
     gcc \
     pre-commit \
+    sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 ########################################################
 

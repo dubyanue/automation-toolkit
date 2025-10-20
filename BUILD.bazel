@@ -49,6 +49,8 @@ filegroup(
 py_library(
     name = "misc_deps",
     deps = [
+        "@rules_python//python/runfiles",
+    ] + [
         "@my_deps//{}".format(f)
         for f in [
             "yamllint",
@@ -82,6 +84,7 @@ py_library(
             "pylint_plugin_utils",
             "pylint_pytest",
             "pylint_pydantic",
+            "bazel_runfiles",
         ]
     ],
 )
@@ -202,4 +205,15 @@ test_suite(
         "//tools/format:format_test",
         "//tools/lint:lint_test",
     ],
+)
+
+py_binary(
+    name = "main",
+    srcs = ["test.py"],
+    data = [
+        ":all_files",
+        "//lib:libs",
+    ],
+    main = "test.py",
+    deps = [":misc_deps"],
 )

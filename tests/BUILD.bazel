@@ -26,9 +26,20 @@ filegroup(
 )
 
 filegroup(
+    name = "test_data",
+    srcs = glob(
+        include = [
+            "data/**",
+        ],
+        allow_empty = True,
+    ),
+)
+
+filegroup(
     name = "test_files",
     srcs = [
         ":non_unittest_files",
+        ":test_data",
         ":unittest_files",
     ],
 )
@@ -39,6 +50,7 @@ custom_py_test(
         ":unittest_files",
         "//lib:libs",
     ],
+    data = [":test_data"],
     tags = ["unit"],
-    deps = ["//:py_test_deps"],
+    deps = ["//:misc_deps"],
 )

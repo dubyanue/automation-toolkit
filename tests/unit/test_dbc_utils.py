@@ -66,18 +66,34 @@ def test_create_select_query_barebones(
 def test_create_placeholders(
     basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs,
 ) -> None:
-    if basic_dbc_criteria_fixture_.columns:
-        assert (
-            dbc_utils.create_placeholders(basic_dbc_criteria_fixture_.columns)
-            == "?,?,?"
-        )
+    if headers := basic_dbc_criteria_fixture_.columns:
+        assert dbc_utils.create_placeholders(headers) == "?,?,?"
 
 
 def test_columnize_not_columnized() -> None:
-    col = "Column1"
-    assert dbc_utils.columnize(col) == "[Column1]"
+    assert dbc_utils.columnize("Column1") == "[Column1]"
 
 
 def test_columnize() -> None:
     col = "[Column1]"
     assert dbc_utils.columnize(col) == col
+
+
+def test_columnize_headers() -> None:
+    assert (
+        dbc_utils.columnize_headers(["Col1", "[Col2]", "Col3"])
+        == "([Col1], [Col2], [Col3])"
+    )
+
+
+def test_create_insert_query(
+    basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs,
+) -> None:
+    table: str = "TestTable"
+    if headers := basic_dbc_criteria_fixture_.columns:
+        insert_query: str = dbc_utils.create_insert_query(table, headers)
+
+        assert (
+            f"INSERT INTO {table} ([Col1], [Col2], [Col3]) VALUES (?,?,?)"
+            == insert_query
+        )

@@ -16,8 +16,8 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [
         # "--html=$$TEST_UNDECLARED_OUTPUTS_DIR/report.html",
         # "--self-contained-html",
         # "--cov",
-        # "--cov-report=xml:$$TEST_UNDECLARED_OUTPUTS_DIR/coverage.xml",
-        # "--cov-report=html:coverage_html",
+        "--cov-report=xml:$$TEST_UNDECLARED_OUTPUTS_DIR/coverage.xml",
+        "--cov-report=html:coverage_html",
         # "-s",
         "-rfExP",
         "-vv",
@@ -30,7 +30,7 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [
         aspect_hints = aspect_hints + [
             "@aspect_rules_lint//lint:ruff_bin",
         ],
-        deps = deps,
+        deps = deps + ["//:py_test_deps"],
         data = data + ["//:config_files"],
         args = common_args + args,  # Allows extra args if needed
         **kwargs
