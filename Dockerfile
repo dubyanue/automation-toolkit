@@ -56,6 +56,7 @@ RUN apt-get install -y \
     gcc \
     pre-commit \
     sqlite3 \
+    lcov \
     && rm -rf /var/lib/apt/lists/*
 ########################################################
 

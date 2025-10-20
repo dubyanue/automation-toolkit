@@ -9,6 +9,7 @@ exports_files(
     [
         ".gitignore",
         "MODULE.bazel",
+        ".coveragerc",
     ] + glob(
         include = [
             "scripts/**",

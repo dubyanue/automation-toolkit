@@ -15,3 +15,5 @@ bazel-*
 **/runfiles/
 .runfiles/
 .coverage
+coverage_html
+coverage.xml

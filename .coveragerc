@@ -1,0 +1,6 @@
+  [run]
+  omit =
+      */site-packages/*
+      */external/*
+      */.cache/*
+      */bazel-*/*
