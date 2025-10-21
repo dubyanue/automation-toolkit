@@ -19,6 +19,9 @@ def test_raise_file_not_found() -> None:
             "test.json", get_logger(test_raise_file_not_found.__name__)
         )
 
+    with pytest.raises(FileNotFoundError):
+        config.ConfigurationBase("test.json")
+
 
 def test_file_exists(
     json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
@@ -51,6 +54,8 @@ def test_json_config_without_json_file(
 ) -> None:
     file_f: FileFactory
     file_f = common_file_factory_fixture_
+    with pytest.raises(OSError, match=r"File:.* is not a \.json file\."):
+        config.JsonConfiguration(file_f)
     with pytest.raises(OSError, match=r"File:.* is not a \.json file\."):
         config.JsonConfiguration(
             file_f, get_logger(test_json_config_without_json_file.__name__)
