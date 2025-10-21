@@ -52,6 +52,7 @@ pipeline {
                 String suite = params.SUITE
                 String[] suitesplit = suite.split(':')
                 String suitename = suitesplit[1]
+                String suitePath = suite.replace(':', '/')
 
                 echo 'Attempting to merge test results before stopping environment...'
                 try {
@@ -74,7 +75,9 @@ pipeline {
                     String baseline = 'PROJECT'
 
                     recordCoverage(
-                        tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
+                        tools: [
+                            [parser: 'COBERTURA', pattern: "bazel-testlogs/${suitePath}/test.outputs/coverage.xml"]
+                        ],
                         id: 'bazel-coverage',
                         sourceCodeRetention: 'EVERY_BUILD',
                         name: 'Test Coverage',
@@ -97,7 +100,7 @@ pipeline {
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'bazel-testlogs/tests/unit_tests/test.outputs/coverage_html',
+                        reportDir: "bazel-testlogs/${suitePath}/test.outputs/coverage_html",
                         reportFiles: 'index.html',
                         reportName: 'Coverage HTML Report'
                     ])
