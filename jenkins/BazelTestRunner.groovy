@@ -63,7 +63,7 @@ pipeline {
                     recordCoverage(
                         id: 'branch-coverage',
                         tools: [[parser: 'COBERTURA']],
-                        sourceDirectories: [[path: 'lib']],
+                        sourceDirectories: [[path: 'lib/**']],
                         name: 'Branch coverage'
                     )
 
