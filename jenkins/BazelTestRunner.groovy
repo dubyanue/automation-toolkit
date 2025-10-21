@@ -61,7 +61,7 @@ pipeline {
                     junit 'results.xml'
 
                     recordCoverage(
-                        tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/tests/*/test.outputs/coverage.xml']],
+                        tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
                         id: 'bazel-coverage',
                         name: 'Bazel Test Coverage'
                     )
