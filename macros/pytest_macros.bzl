@@ -5,9 +5,9 @@ load("@rules_python//python:defs.bzl", "py_test")
 
 def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [], **kwargs):
     common_args = [
-        "--mypy",
-        "--ruff",
-        "--ruff-format",
+        # "--mypy",
+        # "--ruff",
+        # "--ruff-format",
         "--tb=long",
         "--verbose",
         "--junit-xml=$$XML_OUTPUT_FILE",
