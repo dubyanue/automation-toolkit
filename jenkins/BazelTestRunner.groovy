@@ -65,6 +65,7 @@ pipeline {
                     recordCoverage(
                         tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
                         id: 'bazel-coverage',
+                        sourceCodeRetention: 'EVERY_BUILD',
                         name: 'Bazel Test Coverage'
                     )
 
