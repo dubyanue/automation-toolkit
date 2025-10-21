@@ -52,7 +52,6 @@ pipeline {
                 String suite = params.SUITE
                 String[] suitesplit = suite.split(':')
                 String suitename = suitesplit[1]
-                String suitePath = suite.replace(':', '/')
 
                 echo 'Attempting to merge test results before stopping environment...'
                 try {
@@ -73,6 +72,7 @@ pipeline {
                 try {
                     junit 'results.xml'
                     String baseline = 'PROJECT'
+                    String suitePath = suite.replace(':', '/')
 
                     recordCoverage(
                         tools: [
@@ -104,16 +104,6 @@ pipeline {
                         reportFiles: 'index.html',
                         reportName: 'Coverage HTML Report'
                     ])
-
-                    // publishHTML([
-                    //     allowMissing: true,
-                    //     alwaysLinkToLastBuild: true,
-                    //     keepAll: true,
-                    //     reportDir: 'reports/coverage',
-                    //     reportFiles: 'index.html',
-                    //     reportName: 'Coverage Report'
-                    // ])
-
                 } catch (e) {
                     echo "Failed to publish JUnit results: ${e.message}"
                 }
