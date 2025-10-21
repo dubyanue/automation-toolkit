@@ -71,15 +71,16 @@ pipeline {
 
                 try {
                     junit 'results.xml'
+                    String baseline = 'PROJECT'
 
                     recordCoverage(
                         tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
                         id: 'bazel-coverage',
                         sourceCodeRetention: 'EVERY_BUILD',
-                        name: 'Bazel Test Coverage',
+                        name: 'Test Coverage',
                         qualityGates: [
-                            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT'],
-                            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT']
+                            [threshold: 90.0, metric: 'LINE', baseline: baseline],
+                            [threshold: 60.0, metric: 'BRANCH', baseline: baseline]
                         ]
                     )
 
