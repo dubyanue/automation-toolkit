@@ -53,11 +53,11 @@ class SQLite:
         | dict[str, str | float | bool | datetime | None] = (),
     ) -> sqlite3.Cursor | None:
         curs: sqlite3.Cursor | None = None
-        if not self.is_connected():
+        # if not self.is_connected():
+        if not self.cnxn:
             self.connect()
         try:
-            if self.cnxn:
-                curs = self.cnxn.execute(sql, params)  # type: ignore
+            curs = self.cnxn.execute(sql, params)  # type: ignore
         except Exception as ex:
             if self._logger:
                 self._logger.exception("Database operation failed", exc_info=ex)

@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from lib.dbc_lib import dbc_utils
 from lib.dbc_lib.dbc import SQLite
 
@@ -6,6 +8,9 @@ from lib.test_lib.test_fixures import (
     basic_sqlite_db_fixture,
     create_db_sqlite_db_fixture,
 )
+
+if TYPE_CHECKING:
+    import sqlite3
 
 
 def test_sqlite_smoke_test_database(basic_sqlite_db_fixture_: SQLite) -> None:
@@ -22,13 +27,18 @@ def test_sqlite_smoke_test_database(basic_sqlite_db_fixture_: SQLite) -> None:
 def test_sqlite_connect_disconnect(basic_sqlite_db_fixture_: SQLite) -> None:
     sqlite: SQLite = basic_sqlite_db_fixture_
     assert not sqlite.is_connected()
-    assert sqlite.connect() is not None
+    cnxn: sqlite3.Connection = sqlite.connect()
+    assert cnxn is not None
     assert sqlite.is_connected()
+    assert sqlite.connect() is cnxn
+    sqlite.disconnect()
+    sqlite.connect()
+    sqlite._autocommit = False
     sqlite.disconnect()
     assert not sqlite.is_connected()
 
 
-def test_sqlite_bad_connection(basic_sqlite_db_fixture_: SQLite) -> None:
+def test_sqlite_bad_operation(basic_sqlite_db_fixture_: SQLite) -> None:
     sqlite: SQLite = basic_sqlite_db_fixture_
     query: str = "SELECT * FROM FakeTable"
     assert not sqlite.execute(query)
