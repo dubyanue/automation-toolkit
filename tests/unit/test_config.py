@@ -4,6 +4,7 @@ import pytest
 
 from lib.config_lib import config
 from lib.file_lib.file_factory import FileFactory
+from lib.logger_lib.logger import get_logger
 
 # pylint: disable-next=unused-import
 from lib.test_lib.test_fixures import (
@@ -21,7 +22,9 @@ def test_file_exists(
     json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
 ) -> None:
     file_f, _, _ = json_file_factory_fixture_
-    config_base: config.ConfigurationBase = config.ConfigurationBase(file_f)
+    config_base: config.ConfigurationBase = config.ConfigurationBase(
+        file_f, get_logger(test_file_exists.__name__)
+    )
     assert config_base.check_exists() is True
 
 
