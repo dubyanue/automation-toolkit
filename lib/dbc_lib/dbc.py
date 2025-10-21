@@ -95,7 +95,7 @@ class SQLite:
         params: Iterable[str | float | bool | datetime | None]
         | dict[str, str | float | bool | datetime | None] = (),
     ) -> Iterable[Iterable[float | str | bool | datetime | None]]:
-        results: list[Any] = []
+        results: tuple[Any, ...] = ()
         data: sqlite3.Cursor | None = self.execute(sql, params)
         if data:
             results = data.fetchone()
@@ -105,11 +105,10 @@ class SQLite:
         self, sql: str, params: Iterable[Iterable[float | str | bool | datetime | None]]
     ) -> sqlite3.Cursor | None:
         curs: sqlite3.Cursor | None = None
-        if not self.is_connected():
+        if not self.cnxn:
             self.connect()
         try:
-            if self.cnxn:
-                curs = self.cnxn.executemany(sql, params)  # type: ignore
+            curs = self.cnxn.executemany(sql, params)  # type: ignore
         except Exception as ex:
             if self._logger:
                 self._logger.exception("Database operation failed", exc_info=ex)
@@ -118,11 +117,10 @@ class SQLite:
 
     def executescript(self, sql: str) -> sqlite3.Cursor | None:
         curs: sqlite3.Cursor | None = None
-        if not self.is_connected():
+        if not self.cnxn:
             self.connect()
         try:
-            if self.cnxn:
-                curs = self.cnxn.executescript(sql)
+            curs = self.cnxn.executescript(sql)  # type: ignore
         except Exception as ex:
             if self._logger:
                 self._logger.exception("Database operation failed", exc_info=ex)
@@ -137,8 +135,7 @@ class SQLite:
             target_ = target
         if not self.cnxn and not self._connected:
             self.connect()
-        if self.cnxn:
-            self.cnxn.backup(target_)
+        self.cnxn.backup(target_)  # type: ignore
 
     def get_headers(self, table: str) -> list[str]:
         data: list[str] = []
