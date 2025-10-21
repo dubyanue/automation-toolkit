@@ -77,11 +77,7 @@ def test_sqlite_fetchmany(basic_sqlite_db_fixture_: SQLite) -> None:
         (5, "Naruto", 8.0),
     ]
     assert sqlite.fetchmany(query, 5) == expected
-
-    e_query: str = dbc_utils.create_select_query(
-        "Animes", dbc_utils.QueryKwargs(None, ["Name='FakeName'"], ["ORDER BY ID"])
-    )
-    assert not sqlite.fetchmany(e_query)
+    assert not sqlite.fetchmany("SELECT * FROM FAKE")
 
 
 def test_sqlite_fetchone(basic_sqlite_db_fixture_: SQLite) -> None:
@@ -90,10 +86,7 @@ def test_sqlite_fetchone(basic_sqlite_db_fixture_: SQLite) -> None:
         "Animes", dbc_utils.QueryKwargs(None, None, ["ORDER BY ID"])
     )
     assert sqlite.fetchone(query) == (1, "One Piece", 9.0)
-    e_query: str = dbc_utils.create_select_query(
-        "Animes", dbc_utils.QueryKwargs(None, ["Name='FakeName'"], ["ORDER BY ID"])
-    )
-    assert not sqlite.fetchone(e_query)
+    assert not sqlite.fetchone("SELECT * FROM FAKE")
 
 
 def test_sqlite_executemany(create_db_sqlite_db_fixture_: SQLite) -> None:

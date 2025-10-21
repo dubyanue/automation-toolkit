@@ -41,7 +41,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh "bazel test --test_output=all //${params.SUITE}"
+                sh "bazel test //${params.SUITE}"
             }
         }
     }

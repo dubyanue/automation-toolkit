@@ -94,8 +94,8 @@ class SQLite:
         sql: str,
         params: Iterable[str | float | bool | datetime | None]
         | dict[str, str | float | bool | datetime | None] = (),
-    ) -> Iterable[Iterable[float | str | bool | datetime | None]]:
-        results: tuple[Any, ...] = ()
+    ) -> Iterable[Iterable[float | str | bool | datetime | None]] | None:
+        results: tuple[Any, ...] | None = None
         data: sqlite3.Cursor | None = self.execute(sql, params)
         if data:
             results = data.fetchone()
