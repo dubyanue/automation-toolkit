@@ -14,6 +14,7 @@ def custom_py_test(name, srcs, deps = [], args = [], data = [], aspect_hints = [
         "--html=$$TEST_UNDECLARED_OUTPUTS_DIR/report.html",
         "--self-contained-html",
         "--cov",
+        "--cov-branch",
         "--cov-config=.coveragerc",
         "--cov-report=xml:$$TEST_UNDECLARED_OUTPUTS_DIR/coverage.xml",
         "--cov-report=html:$$TEST_UNDECLARED_OUTPUTS_DIR/coverage_html",
