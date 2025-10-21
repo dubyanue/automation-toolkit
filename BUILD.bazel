@@ -207,14 +207,3 @@ test_suite(
         "//tools/lint:lint_test",
     ],
 )
-
-py_binary(
-    name = "main",
-    srcs = ["test.py"],
-    data = [
-        ":all_files",
-        "//lib:libs",
-    ],
-    main = "test.py",
-    deps = [":misc_deps"],
-)
