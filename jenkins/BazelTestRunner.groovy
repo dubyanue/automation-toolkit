@@ -28,9 +28,11 @@ pipeline {
             }
         }
         stage('Git mining') {
-            discoverGitReferenceBuild()
-            mineRepository()
-            gitDiffStat()
+            steps {
+                discoverGitReferenceBuild()
+                mineRepository()
+                gitDiffStat()
+            }
         }
         stage('Test') {
             steps {
