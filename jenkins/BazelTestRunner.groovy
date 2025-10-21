@@ -93,6 +93,15 @@ pipeline {
                         reportName: 'Test Report'
                     ])
 
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'bazel-testlogs/tests/unit_tests/test.outputs/coverage_html',
+                        reportFiles: 'index.html',
+                        reportName: 'Coverage HTML Report'
+                    ])
+
                     // publishHTML([
                     //     allowMissing: true,
                     //     alwaysLinkToLastBuild: true,
