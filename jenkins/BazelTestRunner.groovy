@@ -57,19 +57,10 @@ pipeline {
                     echo "Failed to merge test results: ${e.message}"
                 }
 
+                sh 'find -L ./bazel-testlogs/ -type f -name "report.html" -exec cp {} ./reports/ \\;'
+
                 try {
                     junit 'results.xml'
-
-                    recordCoverage(
-                        id: 'branch-coverage',
-                        tools: [[parser: 'JACOCO']],
-                        sourceDirectories: [[path: 'lib/**']],
-                        name: 'Branch coverage',
-                        qualityGates: [
-                            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
-                            [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]\
-                            ]
-                        )
 
                     recordCoverage(
                         tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
@@ -77,14 +68,15 @@ pipeline {
                         name: 'Bazel Test Coverage'
                     )
 
-                    // publishHTML([
-                    //     allowMissing: true,
-                    //     alwaysLinkToLastBuild: true,
-                    //     keepAll: true,
-                    //     reportDir: 'reports',
-                    //     reportFiles: 'merged_report.html',
-                    //     reportName: 'Test Report'
-                    // ])
+                    publishHTML([
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'reports',
+                        reportFiles: 'report.html',
+                        reportName: 'Test Report'
+                    ])
+
                     // publishHTML([
                     //     allowMissing: true,
                     //     alwaysLinkToLastBuild: true,
