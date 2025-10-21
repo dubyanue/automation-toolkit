@@ -10,21 +10,18 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+
+        stage('Checkout') {
             steps {
-                echo "Running ${BUILD_TAG} on ${env.NODE_NAME} with ${env.NODE_LABELS}..."
                 echo 'Cleaning workspace...'
                 cleanWs(
                     disableDeferredWipeout: true,
                     deleteDirs: true,
                 )
-
-                echo "Building ${env.JOB_NAME} in ${env.WORKSPACE}..."
                 checkout scmGit(
                     branches: [[name: "${params.BRANCH}"]],
                     userRemoteConfigs: [[url: 'git@github.com:dubyanue/automation-toolkit.git']]
                 )
-                sh 'bazel build //...'
             }
         }
         stage('Git mining') {
@@ -32,6 +29,13 @@ pipeline {
                 discoverGitReferenceBuild()
                 mineRepository()
                 gitDiffStat()
+            }
+        }
+        stage('Build') {
+            steps {
+                echo "Running ${BUILD_TAG} on ${env.NODE_NAME} with ${env.NODE_LABELS}..."
+                echo "Building ${env.JOB_NAME} in ${env.WORKSPACE}..."
+                sh 'bazel build //...'
             }
         }
         stage('Test') {
