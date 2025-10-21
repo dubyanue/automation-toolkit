@@ -68,7 +68,11 @@ pipeline {
                         id: 'bazel-coverage',
                         sourceCodeRetention: 'EVERY_BUILD',
                         calculateDiffForChangeRequests: true,
-                        name: 'Bazel Test Coverage'
+                        name: 'Bazel Test Coverage',
+                        qualityGates: [
+                            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
+                        [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]
+                        ]
                     )
 
                     publishHTML([
