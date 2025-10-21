@@ -59,6 +59,7 @@ pipeline {
 
                 try {
                     junit 'results.xml'
+                    junit "\$(find bazel-testlogs/ -type f -name coverage.xml)"
 
                     // publishHTML([
                     //     allowMissing: true,
