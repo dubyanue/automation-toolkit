@@ -59,7 +59,12 @@ pipeline {
 
                 try {
                     junit 'results.xml'
-                    junit './bazel-testlogs/tests/unit_tests/test.outputs/coverage.xml'
+
+                    recordCoverage(
+                        tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/tests/*/test.outputs/coverage.xml']],
+                        id: 'bazel-coverage',
+                        name: 'Bazel Test Coverage'
+                    )
 
                     // publishHTML([
                     //     allowMissing: true,
