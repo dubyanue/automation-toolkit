@@ -78,8 +78,8 @@ pipeline {
                         sourceCodeRetention: 'EVERY_BUILD',
                         name: 'Bazel Test Coverage',
                         qualityGates: [
-                            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
-                        [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true]
+                            [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT'],
+                        [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT']
                         ]
                     )
 
