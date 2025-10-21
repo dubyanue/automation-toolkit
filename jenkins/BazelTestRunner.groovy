@@ -27,7 +27,7 @@ pipeline {
                 sh 'bazel build //...'
             }
         }
-        stage ('Git mining') {
+        stage('Git mining') {
             discoverGitReferenceBuild()
             mineRepository()
             gitDiffStat()
