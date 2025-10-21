@@ -27,7 +27,11 @@ pipeline {
                 sh 'bazel build //...'
             }
         }
-
+        stage ('Git mining') {
+            discoverGitReferenceBuild()
+            mineRepository()
+            gitDiffStat()
+        }
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -62,9 +66,6 @@ pipeline {
                 try {
                     junit 'results.xml'
 
-                    discoverGitReferenceBuild(targetBranch: 'master')
-                    mineRepository()
-                    gitDiffStat()
                     recordCoverage(
                         tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
                         id: 'bazel-coverage',
