@@ -22,9 +22,7 @@ def test_file_exists(
     json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
 ) -> None:
     file_f, _, _ = json_file_factory_fixture_
-    config_base: config.ConfigurationBase = config.ConfigurationBase(
-        file_f, get_logger(test_file_exists.__name__)
-    )
+    config_base: config.ConfigurationBase = config.ConfigurationBase(file_f)
     assert config_base.check_exists() is True
 
 
@@ -52,7 +50,9 @@ def test_json_config_without_json_file(
     file_f: FileFactory
     file_f = common_file_factory_fixture_
     with pytest.raises(OSError, match=r"File:.* is not a \.json file\."):
-        config.JsonConfiguration(file_f)
+        config.JsonConfiguration(
+            file_f, get_logger(test_json_config_without_json_file.__name__)
+        )
 
 
 if __name__ == "__main__":
