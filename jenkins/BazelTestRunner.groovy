@@ -62,6 +62,7 @@ pipeline {
                 try {
                     junit 'results.xml'
 
+                    discoverGitReferenceBuild(targetBranch: 'master')
                     recordCoverage(
                         tools: [[parser: 'COBERTURA', pattern: 'bazel-testlogs/**/test.outputs/coverage.xml']],
                         id: 'bazel-coverage',
