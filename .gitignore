@@ -17,4 +17,4 @@ bazel-*
 .coverage
 coverage_html
 coverage.xml
-reports
+reports/*
