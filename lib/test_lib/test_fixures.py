@@ -1,8 +1,7 @@
 from collections.abc import Generator
-from logging import DEBUG, Logger
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from runfiles import Runfiles
@@ -11,6 +10,9 @@ from lib.dbc_lib.dbc import SQLite
 from lib.dbc_lib.dbc_utils import QueryKwargs
 from lib.file_lib.file_factory import FileFactory
 from lib.logger_lib.logger import get_logger
+
+if TYPE_CHECKING:
+    from logging import Logger
 
 
 @pytest.fixture(name="common_file_factory_fixture_")
@@ -53,7 +55,7 @@ def basic_dbc_criteria_fixture() -> QueryKwargs:
 @pytest.fixture(name="basic_sqlite_db_fixture_")
 def basic_sqlite_db_fixture() -> Generator[SQLite]:
     db_file_path = FileFactory("tests/data/test.db")
-    logger: Logger = get_logger(basic_sqlite_db_fixture.__name__, DEBUG)
+    logger: Logger = get_logger(basic_sqlite_db_fixture.__name__)
 
     r = Runfiles.Create()
     sqlite: SQLite | None = None
