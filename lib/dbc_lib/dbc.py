@@ -119,7 +119,7 @@ class PyODBC:
         data: DBCursor | None = self.execute(sql, params)
         if data:
             results = data.fetchone()
-            if mapped and results and isinstance(results, pyodbc.Row):
+            if mapped and results and isinstance(results, (pyodbc.Row, tuple)):
                 results = map_table_data(results, data.description)
         return results
 
