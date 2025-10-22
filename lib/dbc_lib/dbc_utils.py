@@ -8,6 +8,23 @@ class QueryKwargs:
     additionals: list[str] | None
 
 
+def sql_server_connstring(**kwargs: dict[str, str]) -> str:
+    parts = [
+        f"DRIVER={kwargs['driver']}",
+        f"SERVER={kwargs['server']}",
+        f"UID={kwargs['username']}",
+        f"PWD={kwargs['password']}",
+        "MARS_Connection=yes",
+        f"DATABASE={kwargs['database']}",
+        "TrustServerCertificate=YES",
+        "encrypt=NO",
+    ]
+
+    connstring: str = ";".join(parts)
+
+    return connstring
+
+
 def create_where(criteria: list[str] | None) -> str:
     return "" if not criteria else " WHERE " + " AND ".join(criteria)
 

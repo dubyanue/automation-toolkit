@@ -69,6 +69,7 @@ py_library(
             "pygments",
             "pytz",
             "types_pytz",
+            "types_requests",
             "mypy",
             "ruff",
             "soupsieve",

@@ -6,20 +6,37 @@ from typing import TYPE_CHECKING, Any
 import pytest
 from runfiles import Runfiles
 
+from lib.config_lib import config
 from lib.dbc_lib.dbc import SQLite
 from lib.dbc_lib.dbc_utils import QueryKwargs
 from lib.file_lib.file_factory import FileFactory
+from lib.file_lib.json_tool import json_write
 from lib.logger_lib.logger import get_logger
 
 if TYPE_CHECKING:
     from logging import Logger
 
 
+def create_named_file(
+    data: str | None = None,
+    mode: str = "w+",
+    suffix: str | None = None,
+    *,
+    delete: bool = False,
+) -> str:
+    filename: str
+    with NamedTemporaryFile(
+        mode=mode, delete=delete, encoding="utf-8", suffix=suffix
+    ) as tmp:
+        filename = tmp.name
+        if data:
+            tmp.write(data)
+    return filename
+
+
 @pytest.fixture(name="common_file_factory_fixture_")
 def common_file_factory_fixture() -> Generator[FileFactory]:
-    with NamedTemporaryFile(mode="w+", delete=False, encoding="utf-8") as tmp:
-        filename_: str = tmp.name
-
+    filename_: str = create_named_file()
     file_factory_: FileFactory = FileFactory(filename_)
     yield file_factory_
 
@@ -32,13 +49,31 @@ def json_file_factory_fixture() -> Generator[tuple[FileFactory, str, dict[str, A
     # Setup
     test_json: str = '{"key1":"val1","key2":1,"key3":true}'
     test_dict: dict[str, Any] = {"key1": "val1", "key2": 1, "key3": True}
-    with NamedTemporaryFile(
-        mode="w+", delete=False, encoding="utf-8", suffix=".json"
-    ) as tmp:
-        filename_: str = tmp.name
-
+    filename_: str = create_named_file(suffix=".json")
     file_factory_: FileFactory = FileFactory(filename_)
     yield (file_factory_, test_json, test_dict)
+
+    if (file_path := Path(filename_)).exists():
+        file_path.unlink(missing_ok=True)
+
+
+@pytest.fixture(name="json_database_config_fixture_")
+def json_database_config_fixture() -> Generator[config.JsonDatabaseConfiguration]:
+    # Setup
+    test_creds: dict[str, str] = {
+        "username": "user1",
+        "password": "pass1",
+        "server": "server1",
+        "driver": "driver1",
+        "database": "database1",
+    }
+    filename_: str = create_named_file(suffix=".json")
+    file_factory_: FileFactory = FileFactory(filename_)
+    json_write(test_creds, file_factory_)
+    jdc: config.JsonDatabaseConfiguration = config.JsonDatabaseConfiguration(
+        file_factory_
+    )
+    yield jdc
 
     if (file_path := Path(filename_)).exists():
         file_path.unlink(missing_ok=True)

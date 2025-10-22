@@ -9,6 +9,7 @@ from lib.logger_lib.logger import get_logger
 # pylint: disable-next=unused-import
 from lib.test_lib.test_fixures import (
     common_file_factory_fixture,
+    json_database_config_fixture,
     json_file_factory_fixture,
 )
 
@@ -60,6 +61,18 @@ def test_json_config_without_json_file(
         config.JsonConfiguration(
             file_f, get_logger(test_json_config_without_json_file.__name__)
         )
+
+
+def test_json_database_config(
+    json_database_config_fixture_: config.JsonDatabaseConfiguration,
+) -> None:
+    jdc: config.JsonDatabaseConfiguration
+    jdc = json_database_config_fixture_
+    assert jdc.username == "user1"
+    assert jdc.password == "pass1"
+    assert jdc.server == "server1"
+    assert jdc.driver == "driver1"
+    assert jdc.database == "database1"
 
 
 if __name__ == "__main__":

@@ -1,7 +1,30 @@
+from lib.config_lib.config import JsonDatabaseConfiguration
 from lib.dbc_lib import dbc_utils
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import basic_dbc_criteria_fixture
+from lib.test_lib.test_fixures import (
+    basic_dbc_criteria_fixture,
+    json_database_config_fixture,
+)
+
+
+def test_sql_server_connstring(
+    json_database_config_fixture_: JsonDatabaseConfiguration,
+) -> None:
+    jdc: JsonDatabaseConfiguration
+    jdc = json_database_config_fixture_
+    expected: list[str] = [
+        "DRIVER=driver1;",
+        "SERVER=server1;",
+        "UID=user1;",
+        "PWD=pass1;",
+        "MARS_Connection=yes;",
+        "DATABASE=database1;",
+        "TrustServerCertificate=YES;",
+        "encrypt=NO",
+    ]
+
+    assert dbc_utils.sql_server_connstring(**jdc._configs) == "".join(expected)
 
 
 def test_create_where(basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs) -> None:
