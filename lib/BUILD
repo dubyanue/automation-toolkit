@@ -4,6 +4,7 @@ filegroup(
     name = "libs",
     srcs = [
         "//lib/config_lib",
+        "//lib/data_lib",
         "//lib/dbc_lib",
         "//lib/file_lib",
         "//lib/logger_lib",

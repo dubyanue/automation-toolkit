@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from lib.dbc_lib import dbc_utils
-from lib.dbc_lib.dbc import SQLite
+from lib.dbc_lib.dbc import DBConnection, SQLite
 
 # pylint: disable-next=unused-import
 from lib.test_lib.test_fixures import (
@@ -27,7 +27,7 @@ def test_sqlite_smoke_test_database(basic_sqlite_db_fixture_: SQLite) -> None:
 def test_sqlite_connect_disconnect(basic_sqlite_db_fixture_: SQLite) -> None:
     sqlite: SQLite = basic_sqlite_db_fixture_
     assert not sqlite.is_connected()
-    cnxn: sqlite3.Connection = sqlite.connect()
+    cnxn: DBConnection = sqlite.connect()
     assert cnxn is not None
     assert sqlite.is_connected()
     assert sqlite.connect() is cnxn

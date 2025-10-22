@@ -1,4 +1,9 @@
 from dataclasses import dataclass
+from typing import Any
+
+import pyodbc  # type: ignore
+
+DUMMY_QUERY: str = "SELECT * FROM {} WHERE 1=0"
 
 
 @dataclass
@@ -9,6 +14,7 @@ class QueryKwargs:
 
 
 def sql_server_connstring(**kwargs: dict[str, str]) -> str:
+    # https://www.connectionstrings.com/formating-rules-for-connection-strings/
     parts = [
         f"DRIVER={kwargs['driver']}",
         f"SERVER={kwargs['server']}",
@@ -23,6 +29,10 @@ def sql_server_connstring(**kwargs: dict[str, str]) -> str:
     connstring: str = ";".join(parts)
 
     return connstring
+
+
+def map_table_data(row: pyodbc.Row, description: tuple[Any, ...]) -> dict[str, Any]:
+    return dict(zip([desc[0] for desc in description], row, strict=True))
 
 
 def create_where(criteria: list[str] | None) -> str:
