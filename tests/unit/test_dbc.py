@@ -150,5 +150,18 @@ def test_mapped_fetchmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
         dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
     )
     expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
-    pyodbc_.connect()
     assert pyodbc_.fetchmany(query, 1, mapped=True) == [expected]
+
+
+def test_pyodbc_connect_disconnect(basic_pyodbc_db_fixture_: PyODBC) -> None:
+    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
+    assert not pyodbc_.is_connected()
+    cnxn: DBConnection = pyodbc_.connect()
+    assert cnxn is not None
+    assert pyodbc_.is_connected()
+    assert pyodbc_.connect() is cnxn
+    pyodbc_.disconnect()
+    pyodbc_.connect()
+    pyodbc_._autocommit = False
+    pyodbc_.disconnect()
+    assert not pyodbc_.is_connected()
