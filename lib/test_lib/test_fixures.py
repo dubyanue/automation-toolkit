@@ -8,7 +8,7 @@ from runfiles import Runfiles
 
 from lib.config_lib import config
 from lib.dbc_lib.dbc import PyODBC, SQLite
-from lib.dbc_lib.dbc_utils import QueryKwargs
+from lib.dbc_lib.dbc_utils import QueryKwargs, create_basic_connstring
 from lib.file_lib.file_factory import FileFactory
 from lib.file_lib.json_tool import json_write
 from lib.logger_lib.logger import get_logger
@@ -140,13 +140,21 @@ def basic_pyodbc_db_fixture() -> Generator[PyODBC]:
 
     r = Runfiles.Create()
     pyodbc_: PyODBC | None = None
+    sql_file: FileFactory | str | None = None
+
+    creds: dict[str, str] = {"driver": "SQLite3"}
+
     if r:
         sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}")
         if sql_file and Path(sql_file).exists():
-            pyodbc_ = SQLite(sql_file, logger)
+            creds["database"] = sql_file
 
-    if db_file_path.exists():
-        pyodbc_ = SQLite(db_file_path, logger)
+    if not sql_file and db_file_path.exists():
+        creds["database"] = str(db_file_path)
+
+    conn_str: str = create_basic_connstring(**creds)
+
+    pyodbc_ = PyODBC(conn_str, logger)
 
     if pyodbc_:
         yield pyodbc_
