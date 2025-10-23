@@ -8,23 +8,23 @@ from lib.test_lib.test_fixures import (
 )
 
 
-def test_sql_server_connstring(
+def test_create_basic_connstring(
     json_database_config_fixture_: JsonDatabaseConfiguration,
 ) -> None:
     jdc: JsonDatabaseConfiguration
     jdc = json_database_config_fixture_
-    expected: list[str] = [
-        "DRIVER=driver1;",
-        "SERVER=server1;",
-        "UID=user1;",
-        "PWD=pass1;",
-        "MARS_Connection=yes;",
-        "DATABASE=database1;",
-        "TrustServerCertificate=YES;",
-        "encrypt=NO",
-    ]
+    expected: str = (
+        "DRIVER=driver1;"
+        "DATABASE=database1;"
+        "SERVER=server1;"
+        "UID=user1;"
+        "PWD=pass1;"
+        "TrustServerCertificate=YES;"
+        "encrypt=NO;"
+        "MARS_Connection=yes"
+    )
 
-    assert dbc_utils.sql_server_connstring(**jdc._configs) == "".join(expected)
+    assert dbc_utils.create_basic_connstring(**jdc._configs) == expected
 
 
 def test_create_where(basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs) -> None:

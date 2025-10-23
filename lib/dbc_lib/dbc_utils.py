@@ -13,20 +13,29 @@ class QueryKwargs:
     additionals: list[str] | None
 
 
-def sql_server_connstring(**kwargs: dict[str, str]) -> str:
+def create_basic_connstring(**kwargs: str) -> str:
     # https://www.connectionstrings.com/formating-rules-for-connection-strings/
     parts = [
         f"DRIVER={kwargs['driver']}",
-        f"SERVER={kwargs['server']}",
-        f"UID={kwargs['username']}",
-        f"PWD={kwargs['password']}",
-        "MARS_Connection=yes",
         f"DATABASE={kwargs['database']}",
-        "TrustServerCertificate=YES",
-        "encrypt=NO",
     ]
 
-    connstring: str = ";".join(parts)
+    if server := kwargs.get("server"):
+        parts.append(f"SERVER={server}")
+
+    if username := kwargs.get("username"):
+        parts.append(f"UID={username}")
+
+    if password := kwargs.get("password"):
+        parts.append(f"PWD={password}")
+
+    adds: list[str] = [
+        "TrustServerCertificate=YES",
+        "encrypt=NO",
+        "MARS_Connection=yes",
+    ]
+
+    connstring: str = ";".join(parts + adds)
 
     return connstring
 
