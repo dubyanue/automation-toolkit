@@ -133,7 +133,7 @@ def test_sqlite_backup(basic_sqlite_db_fixture_: SQLite) -> None:
     assert sqlite2.fetchall(query) == expected
 
 
-def test_mapped_fetch(basic_pyodbc_db_fixture_: PyODBC) -> None:
+def test_mapped_fetchone(basic_pyodbc_db_fixture_: PyODBC) -> None:
     pyodbc_: PyODBC = basic_pyodbc_db_fixture_
     query: str = dbc_utils.create_select_query(
         "Animes",
@@ -141,3 +141,14 @@ def test_mapped_fetch(basic_pyodbc_db_fixture_: PyODBC) -> None:
     )
     expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
     assert pyodbc_.fetchone(query, mapped=True) == expected
+
+
+def test_mapped_fetchmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
+    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
+    query: str = dbc_utils.create_select_query(
+        "Animes",
+        dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
+    )
+    expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
+    pyodbc_.connect()
+    assert pyodbc_.fetchmany(query, 1, mapped=True) == [expected]
