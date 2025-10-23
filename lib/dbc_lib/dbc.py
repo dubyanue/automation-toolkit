@@ -161,10 +161,6 @@ class SQLite(PyODBC):
         self._connection_str = (
             FileFactory(filename) if isinstance(filename, str) else filename
         )
-        self._logger: Logger | None = logger
-        self._autocommit: bool = autocommit
-        self._connected: bool = False
-        self.cnxn: DBConnection | None = None
 
     def connect(self, timeout: int = 1) -> DBConnection:
         if not self.cnxn or not self._connected:
@@ -190,9 +186,10 @@ class SQLite(PyODBC):
         return curs
 
     def backup(self, target: DBConnection | str) -> None:
+        target_: DBConnection
         if isinstance(target, str):
             sqlite: SQLite = SQLite(target, self._logger)
-            target_: DBConnection = sqlite.connect()
+            target_ = sqlite.connect()
         else:
             target_ = target
         if not self.cnxn and not self._connected:

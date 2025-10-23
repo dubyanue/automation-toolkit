@@ -51,9 +51,11 @@ repos:
           - "types-pytz"
           - "pyodbc"
           - "pydantic"
+          - "pytest"
+          - "bazel-runfiles"
         args: ["--config-file=pyproject.toml"]
   - repo: https://github.com/pylint-dev/pylint
-    rev: 'v4.0.1'
+    rev: 'v4.0.2'
     hooks:
       - id: pylint
         types_or: [python, pyi]
