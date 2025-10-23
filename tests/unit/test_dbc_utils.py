@@ -1,3 +1,5 @@
+import pytest
+
 from lib.config_lib.config import JsonDatabaseConfiguration
 from lib.dbc_lib import dbc_utils
 
@@ -25,6 +27,26 @@ def test_create_basic_connstring(
     )
 
     assert dbc_utils.create_basic_connstring(**jdc._configs) == expected
+
+
+def test_create_basic_connstring_key_error() -> None:
+    creds: dict[str, str] = {}
+    with pytest.raises(KeyError):
+        dbc_utils.create_basic_connstring(**creds)
+
+
+def test_create_basic_connstring_no_details() -> None:
+    driver: str = "SQLite"
+    database: str = "test.sql"
+    creds: dict[str, str] = {"driver": driver, "database": database}
+    expected: str = (
+        f"DRIVER={driver};"
+        f"DATABASE={database};"
+        "TrustServerCertificate=YES;"
+        "encrypt=NO;"
+        "MARS_Connection=yes"
+    )
+    assert dbc_utils.create_basic_connstring(**creds) == expected
 
 
 def test_create_where(basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs) -> None:

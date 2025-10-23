@@ -11,7 +11,7 @@ class FileFactory(Path):
     def __new__(cls, filename: str) -> "FileFactory":
         self = super().__new__(cls, filename)
         self.is_open = False
-        return self  # ← Must return the instance!
+        return self
 
     def create(self, mode: int = 0o777) -> bool:
         self.touch(mode, exist_ok=True)
@@ -67,10 +67,6 @@ class FileFactory(Path):
     def _open(
         self, mode: str = "r", create_mode: int = 0o777, encoding: str = "utf-8"
     ) -> Generator[IO[Any]]:
-        """
-        Context manager for opening the file.
-        Usage: with file_factory.open('w') as f: ...
-        """
         if not self.exists():
             self.create(create_mode)
 

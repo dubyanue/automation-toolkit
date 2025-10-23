@@ -1,10 +1,11 @@
 from typing import TYPE_CHECKING
 
 from lib.dbc_lib import dbc_utils
-from lib.dbc_lib.dbc import DBConnection, SQLite
+from lib.dbc_lib.dbc import DBConnection, PyODBC, SQLite
 
 # pylint: disable-next=unused-import
 from lib.test_lib.test_fixures import (
+    basic_pyodbc_db_fixture,
     basic_sqlite_db_fixture,
     create_db_sqlite_db_fixture,
 )
@@ -130,3 +131,13 @@ def test_sqlite_backup(basic_sqlite_db_fixture_: SQLite) -> None:
         (10, "Attack On Titan", 8.5),
     ]
     assert sqlite2.fetchall(query) == expected
+
+
+def test_mapped_fetch(basic_pyodbc_db_fixture_: PyODBC) -> None:
+    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
+    query: str = dbc_utils.create_select_query(
+        "Animes",
+        dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
+    )
+    expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
+    assert pyodbc_.fetchone(query, mapped=True) == expected

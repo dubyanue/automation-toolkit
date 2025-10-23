@@ -7,7 +7,7 @@ import pytest
 from runfiles import Runfiles
 
 from lib.config_lib import config
-from lib.dbc_lib.dbc import SQLite
+from lib.dbc_lib.dbc import PyODBC, SQLite
 from lib.dbc_lib.dbc_utils import QueryKwargs
 from lib.file_lib.file_factory import FileFactory
 from lib.file_lib.json_tool import json_write
@@ -131,3 +131,28 @@ def create_db_sqlite_db_fixture() -> Generator[SQLite]:
 
     if sqlite.is_connected():
         sqlite.disconnect()
+
+
+@pytest.fixture(name="basic_pyodbc_db_fixture_")
+def basic_pyodbc_db_fixture() -> Generator[PyODBC]:
+    db_file_path = FileFactory("tests/data/test.db")
+    logger: Logger = get_logger(basic_pyodbc_db_fixture.__name__)
+
+    r = Runfiles.Create()
+    pyodbc_: PyODBC | None = None
+    if r:
+        sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}")
+        if sql_file and Path(sql_file).exists():
+            pyodbc_ = SQLite(sql_file, logger)
+
+    if db_file_path.exists():
+        pyodbc_ = SQLite(db_file_path, logger)
+
+    if pyodbc_:
+        yield pyodbc_
+
+        if pyodbc_.is_connected():
+            pyodbc_.disconnect()
+    else:
+        err_msg: str = f"Could not find test database at {db_file_path}"
+        raise FileNotFoundError(err_msg)
