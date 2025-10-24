@@ -20,10 +20,11 @@ def test_sqlite_smoke_test_database(basic_sqlite_db_fixture_: SQLite) -> None:
     query_kwargs: dbc_utils.QueryKwargs = dbc_utils.QueryKwargs(None, criteria, None)
     select_query: str = dbc_utils.create_select_query("Animes", query_kwargs)
     assert not sqlite.is_connected()
-    if curs := sqlite.execute(select_query):
-        assert sqlite.is_connected()
-        assert curs.fetchone() == (3, "Bleach", 10.0)
-        curs.close()
+    curs = sqlite.execute(select_query)
+    assert sqlite.is_connected()
+    assert curs is not None
+    assert curs.fetchone() == (3, "Bleach", 10.0)
+    curs.close()
 
 
 def test_sqlite_connect_disconnect(basic_sqlite_db_fixture_: SQLite) -> None:
@@ -105,8 +106,9 @@ def test_sqlite_executemany(create_db_sqlite_db_fixture_: SQLite) -> None:
     ]
     headers: list[str] = sqlite.get_headers(table)
     insert_query: str = dbc_utils.create_insert_query(table, headers)
-    if curs := sqlite.executemany(insert_query, data):
-        curs.close()
+    curs = sqlite.executemany(insert_query, data)
+    assert curs is not None
+    curs.close()
     assert sqlite.fetchall(select_query) == data
 
 
@@ -116,9 +118,9 @@ def test_sqlite_backup(basic_sqlite_db_fixture_: SQLite) -> None:
         "Animes", dbc_utils.QueryKwargs(None, None, ["ORDER BY ID"])
     )
     assert not sqlite2.fetchall(query)
-    if sqlite2.cnxn:
-        with basic_sqlite_db_fixture_ as sqlite:
-            sqlite.backup(sqlite2.cnxn)
+    assert sqlite2.cnxn is not None
+    with basic_sqlite_db_fixture_ as sqlite:
+        sqlite.backup(sqlite2.cnxn)
 
     expected = [
         (1, "One Piece", 9.0),

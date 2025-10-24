@@ -30,6 +30,9 @@ def test_file_exists(
     file_f, _, _ = json_file_factory_fixture_
     config_base: config.ConfigurationBase = config.ConfigurationBase(file_f)
     assert config_base.check_exists() is True
+    file_f.delete()
+    with pytest.raises(FileNotFoundError):
+        config_base.check_exists()
 
 
 def test_file_extension(

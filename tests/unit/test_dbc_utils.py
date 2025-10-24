@@ -27,6 +27,7 @@ def test_create_basic_connstring(
     )
 
     assert dbc_utils.create_basic_connstring(**jdc._configs) == expected
+    jdc._file.delete()
 
 
 def test_create_basic_connstring_key_error() -> None:
@@ -111,8 +112,9 @@ def test_create_select_query_barebones(
 def test_create_placeholders(
     basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs,
 ) -> None:
-    if headers := basic_dbc_criteria_fixture_.columns:
-        assert dbc_utils.create_placeholders(headers) == "?,?,?"
+    headers = basic_dbc_criteria_fixture_.columns
+    assert headers is not None
+    assert dbc_utils.create_placeholders(headers) == "?,?,?"
 
 
 def test_columnize_not_columnized() -> None:
@@ -135,10 +137,9 @@ def test_create_insert_query(
     basic_dbc_criteria_fixture_: dbc_utils.QueryKwargs,
 ) -> None:
     table: str = "TestTable"
-    if headers := basic_dbc_criteria_fixture_.columns:
-        insert_query: str = dbc_utils.create_insert_query(table, headers)
-
-        assert (
-            f"INSERT INTO {table} ([Col1], [Col2], [Col3]) VALUES (?,?,?)"
-            == insert_query
-        )
+    headers = basic_dbc_criteria_fixture_.columns
+    assert headers is not None
+    insert_query: str = dbc_utils.create_insert_query(table, headers)
+    assert (
+        f"INSERT INTO {table} ([Col1], [Col2], [Col3]) VALUES (?,?,?)" == insert_query
+    )

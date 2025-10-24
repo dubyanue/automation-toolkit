@@ -70,7 +70,6 @@ def temp_directory_fixture() -> Generator[str]:
 
 @pytest.fixture(name="json_database_config_fixture_")
 def json_database_config_fixture() -> Generator[config.JsonDatabaseConfiguration]:
-    # Setup
     test_creds: dict[str, str] = {
         "username": "user1",
         "password": "pass1",
@@ -101,42 +100,36 @@ def basic_dbc_criteria_fixture() -> QueryKwargs:
 @pytest.fixture(name="basic_sqlite_db_fixture_")
 def basic_sqlite_db_fixture() -> Generator[SQLite]:
     db_file_path = FileFactory("tests/data/test.db")
-    logger: Logger = get_logger(basic_sqlite_db_fixture.__name__)
 
     r = Runfiles.Create()
-    sqlite: SQLite | None = None
-    if r:
-        sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}")
-        if sql_file and Path(sql_file).exists():
-            sqlite = SQLite(sql_file, logger)
+    sql_file: str | FileFactory | None
 
-    if db_file_path.exists():
-        sqlite = SQLite(db_file_path, logger)
+    sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}") if r else db_file_path
 
-    if sqlite:
-        yield sqlite
+    assert sql_file is not None
 
-        if sqlite.is_connected():
-            sqlite.disconnect()
-    else:
-        err_msg: str = f"Could not find test database at {db_file_path}"
-        raise FileNotFoundError(err_msg)
+    logger: Logger = get_logger(basic_sqlite_db_fixture.__name__)
+    sqlite: SQLite = SQLite(sql_file, logger)
+
+    yield sqlite
+
+    if sqlite.is_connected():
+        sqlite.disconnect()
 
 
 @pytest.fixture(name="create_db_sqlite_db_fixture_")
 def create_db_sqlite_db_fixture() -> Generator[SQLite]:
-    db_file_path = FileFactory("tests/data/test.sql")
-
     r = Runfiles.Create()
     sqlite: SQLite = SQLite()
-    if r:
-        sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}")
-        if sql_file and Path(sql_file).exists():
-            db_file_path = FileFactory(sql_file)
+    sql_file: FileFactory = FileFactory("tests/data/test.sql")
 
-    if db_file_path.exists():
-        with db_file_path.open("r") as fh:
-            sqlite.executescript(fh.read())
+    db_file_path: FileFactory = (
+        FileFactory(str(r.Rlocation(f"automation-toolkit/{sql_file}")))
+        if r
+        else sql_file
+    )
+    with db_file_path._open("r") as fh:
+        sqlite.executescript(fh.read())
 
     yield sqlite
 
@@ -146,32 +139,23 @@ def create_db_sqlite_db_fixture() -> Generator[SQLite]:
 
 @pytest.fixture(name="basic_pyodbc_db_fixture_")
 def basic_pyodbc_db_fixture() -> Generator[PyODBC]:
-    db_file_path = FileFactory("tests/data/test.db")
-    logger: Logger = get_logger(basic_pyodbc_db_fixture.__name__)
-
     r = Runfiles.Create()
-    pyodbc_: PyODBC | None = None
-    sql_file: FileFactory | str | None = None
+    sql_file: FileFactory = FileFactory("tests/data/test.db")
 
-    creds: dict[str, str] = {"driver": "SQLite3"}
+    db_file_path: FileFactory = (
+        FileFactory(str(r.Rlocation(f"automation-toolkit/{sql_file}")))
+        if r
+        else sql_file
+    )
 
-    if r:
-        sql_file = r.Rlocation(f"automation-toolkit/{db_file_path}")
-        if sql_file and Path(sql_file).exists():
-            creds["database"] = sql_file
-
-    if not sql_file and db_file_path.exists():
-        creds["database"] = str(db_file_path)
+    creds: dict[str, str] = {"driver": "SQLite3", "database": str(db_file_path)}
 
     conn_str: str = create_basic_connstring(**creds)
 
-    pyodbc_ = PyODBC(conn_str, logger)
+    logger: Logger = get_logger(basic_pyodbc_db_fixture.__name__)
+    pyodbc_: PyODBC = PyODBC(conn_str, logger)
 
-    if pyodbc_:
-        yield pyodbc_
+    yield pyodbc_
 
-        if pyodbc_.is_connected():
-            pyodbc_.disconnect()
-    else:
-        err_msg: str = f"Could not find test database at {db_file_path}"
-        raise FileNotFoundError(err_msg)
+    if pyodbc_.is_connected():
+        pyodbc_.disconnect()
