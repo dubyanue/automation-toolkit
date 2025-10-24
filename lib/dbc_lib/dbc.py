@@ -2,6 +2,7 @@ import sqlite3
 from collections.abc import Iterable
 from datetime import datetime
 from logging import Logger
+from types import TracebackType
 from typing import Any, TypeAlias
 
 import pyodbc  # type: ignore
@@ -27,6 +28,18 @@ class PyODBC:
         self._connected: bool = False
         self.cnxn: DBConnection | None = None
 
+    def __enter__(self) -> "PyODBC":
+        self.connect()
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        self.disconnect(commit=exc_type is None)
+
     def __del__(self) -> None:
         self.disconnect()
 
@@ -50,6 +63,14 @@ class PyODBC:
             self.cnxn = None
             self._connected = False
 
+    def get_description(self, table: str) -> tuple[Any, ...]:
+        description: tuple[Any, ...] = ()
+        curs: DBCursor | None = self.execute(DUMMY_QUERY.format(table))
+        return curs.description if curs else description
+
+    def get_headers(self, table: str) -> list[str]:
+        return [i[0] for i in self.get_description(table)]
+
     def execute(
         self,
         sql: str,
@@ -67,62 +88,6 @@ class PyODBC:
 
         return curs
 
-    def fetchall(
-        self,
-        sql: str,
-        params: Iterable[str | float | bool | datetime | None]
-        | dict[str, str | float | bool | datetime | None] = (),
-        *,
-        mapped: bool = False,
-    ) -> list[Any]:
-        results: list[Any] = []
-        data: DBCursor | None = self.execute(sql, params)
-        if data:
-            results = (
-                data.fetchall()
-                if not mapped
-                else [map_table_data(row, data.description) for row in data.fetchall()]
-            )
-        return results
-
-    def fetchmany(
-        self,
-        sql: str,
-        size: int = 1,
-        params: Iterable[str | float | bool | datetime | None]
-        | dict[str, str | float | bool | datetime | None] = (),
-        *,
-        mapped: bool = False,
-    ) -> list[Any]:
-        results: list[Any] = []
-        data: DBCursor | None = self.execute(sql, params)
-        if data:
-            results = (
-                data.fetchmany(size)
-                if not mapped
-                else [
-                    map_table_data(row, data.description)
-                    for row in data.fetchmany(size)
-                ]
-            )
-        return results
-
-    def fetchone(
-        self,
-        sql: str,
-        params: Iterable[str | float | bool | datetime | None]
-        | dict[str, str | float | bool | datetime | None] = (),
-        *,
-        mapped: bool = False,
-    ) -> pyodbc.Row | dict[str, Any] | None:
-        results: pyodbc.Row | dict[str, Any] | None = None
-        data: DBCursor | None = self.execute(sql, params)
-        if data:
-            results = data.fetchone()
-            if mapped and results and isinstance(results, (pyodbc.Row, tuple)):
-                results = map_table_data(results, data.description)
-        return results
-
     def executemany(
         self, sql: str, params: Iterable[Iterable[float | str | bool | datetime | None]]
     ) -> DBCursor | None:
@@ -137,16 +102,72 @@ class PyODBC:
 
         return curs
 
-    def get_description(self, table: str) -> tuple[Any, ...]:
-        description: tuple[Any, ...] = ()
-        curs: DBCursor | None = self.execute(DUMMY_QUERY.format(table))
-        if curs:
-            description = curs.description
+    def fetchone(
+        self,
+        sql: str,
+        params: Iterable[str | float | bool | datetime | None]
+        | dict[str, str | float | bool | datetime | None] = (),
+        *,
+        mapped: bool = False,
+    ) -> pyodbc.Row | dict[str, Any] | None:
+        results: pyodbc.Row | dict[str, Any] | None = None
+        data: DBCursor | None = self.execute(sql, params)
+        if data:
+            try:
+                results = data.fetchone()
+                if mapped and results and isinstance(results, (pyodbc.Row, tuple)):
+                    results = map_table_data(results, data.description)
+            finally:
+                data.close()
+        return results
 
-        return description
+    def fetchmany(
+        self,
+        sql: str,
+        size: int = 1,
+        params: Iterable[str | float | bool | datetime | None]
+        | dict[str, str | float | bool | datetime | None] = (),
+        *,
+        mapped: bool = False,
+    ) -> list[Any]:
+        results: list[Any] = []
+        data: DBCursor | None = self.execute(sql, params)
+        if data:
+            try:
+                results = (
+                    data.fetchmany(size)
+                    if not mapped
+                    else [
+                        map_table_data(row, data.description)
+                        for row in data.fetchmany(size)
+                    ]
+                )
+            finally:
+                data.close()
+        return results
 
-    def get_headers(self, table: str) -> list[str]:
-        return [i[0] for i in self.get_description(table)]
+    def fetchall(
+        self,
+        sql: str,
+        params: Iterable[str | float | bool | datetime | None]
+        | dict[str, str | float | bool | datetime | None] = (),
+        *,
+        mapped: bool = False,
+    ) -> list[Any]:
+        results: list[Any] = []
+        data: DBCursor | None = self.execute(sql, params)
+        if data:
+            try:
+                results = (
+                    data.fetchall()
+                    if not mapped
+                    else [
+                        map_table_data(row, data.description) for row in data.fetchall()
+                    ]
+                )
+            finally:
+                data.close()
+        return results
 
 
 class SQLite(PyODBC):
@@ -185,13 +206,7 @@ class SQLite(PyODBC):
 
         return curs
 
-    def backup(self, target: DBConnection | str) -> None:
-        target_: DBConnection
-        if isinstance(target, str):
-            sqlite: SQLite = SQLite(target, self._logger)
-            target_ = sqlite.connect()
-        else:
-            target_ = target
+    def backup(self, target: DBConnection) -> None:
         if not self.cnxn and not self._connected:
             self.connect()
-        self.cnxn.backup(target_)  # type: ignore
+        self.cnxn.backup(target)  # type: ignore

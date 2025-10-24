@@ -23,6 +23,7 @@ def test_sqlite_smoke_test_database(basic_sqlite_db_fixture_: SQLite) -> None:
     if curs := sqlite.execute(select_query):
         assert sqlite.is_connected()
         assert curs.fetchone() == (3, "Bleach", 10.0)
+        curs.close()
 
 
 def test_sqlite_connect_disconnect(basic_sqlite_db_fixture_: SQLite) -> None:
@@ -104,7 +105,8 @@ def test_sqlite_executemany(create_db_sqlite_db_fixture_: SQLite) -> None:
     ]
     headers: list[str] = sqlite.get_headers(table)
     insert_query: str = dbc_utils.create_insert_query(table, headers)
-    sqlite.executemany(insert_query, data)
+    if curs := sqlite.executemany(insert_query, data):
+        curs.close()
     assert sqlite.fetchall(select_query) == data
 
 
@@ -165,3 +167,16 @@ def test_pyodbc_connect_disconnect(basic_pyodbc_db_fixture_: PyODBC) -> None:
     pyodbc_._autocommit = False
     pyodbc_.disconnect()
     assert not pyodbc_.is_connected()
+
+
+def test_pyodbc_failed_executmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
+    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
+    data: tuple[tuple[int, int], ...] = ((1, 2), (3, 4))
+    assert not (pyodbc_.executemany("INSERT INTO FAKE([ID], [Name]) VALUES(?,?)", data))
+
+
+def test_sqlite_failed_executescript(basic_sqlite_db_fixture_: SQLite) -> None:
+    sqlite: SQLite = basic_sqlite_db_fixture_
+    assert not sqlite.executescript("INSERT INTO FAKE([ID], [Name]) VALUES(?,?)")
+    sqlite._logger = None
+    assert not sqlite.executescript("INSERT INTO FAKE([ID], [Name]) VALUES(?,?)")

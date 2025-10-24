@@ -50,6 +50,9 @@ custom_py_test(
         ":unittest_files",
         "//lib:libs",
     ],
+    args = [
+        "--cov=lib",
+    ],
     data = [":test_data"],
     tags = ["unit"],
     deps = ["//:misc_deps"],

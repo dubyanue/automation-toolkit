@@ -3,11 +3,11 @@ from logging import Formatter, LogRecord
 
 import pytz
 
-log_fmt: str = (
+LOG_FMT: str = (
     "%(asctime)s::%(levelname)s::%(threadName)s::%(filename)s::"
     "%(funcName)s::%(lineno)d::%(name)s::%(message)s"
 )
-date_fmt: str = "%Y-%m-%d %H:%M:%S.%f"
+DATE_FMT: str = "%Y-%m-%d %H:%M:%S.%f"
 
 EST: tzinfo = pytz.timezone("US/Eastern")
 
@@ -19,9 +19,9 @@ class CustomLogFormatter(Formatter):
             s = ct.strftime(datefmt)
         else:
             t = ct.strftime("%Y-%m-%d %H:%M:%S")
-            s = f"{t},{int(record.msecs):03d}"
+            s = f"{t}.{int(record.msecs):03d}"
         return s
 
 
 def get_formatter() -> CustomLogFormatter:
-    return CustomLogFormatter(fmt=log_fmt, datefmt=date_fmt)
+    return CustomLogFormatter(fmt=LOG_FMT, datefmt=DATE_FMT)
