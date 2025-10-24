@@ -143,8 +143,9 @@ def test_mapped_fetchone(basic_pyodbc_db_fixture_: PyODBC) -> None:
         dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
     )
     expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
-    with basic_pyodbc_db_fixture_ as pyodbc_:
-        assert pyodbc_.fetchone(query, mapped=True) == expected
+    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
+    # NOTE Not using context manager to allow fixsture to disconnect
+    assert pyodbc_.fetchone(query, mapped=True) == expected
 
 
 def test_mapped_fetchmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
