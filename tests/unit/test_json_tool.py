@@ -1,7 +1,5 @@
 from typing import Any
 
-import pytest
-
 from lib.file_lib.file_factory import FileFactory
 from lib.file_lib.json_tool import json_read, json_write
 
@@ -68,9 +66,3 @@ def test_json_write_to_filename_str(
     file_f, test_json, test_dict = json_file_factory_fixture_
     json_write(test_dict, str(file_f), None, sort_keys=False)
     assert file_f.read() == test_json
-
-
-if __name__ == "__main__":
-    import sys
-
-    sys.exit(pytest.main())

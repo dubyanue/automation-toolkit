@@ -73,9 +73,3 @@ def test_json_database_config(
     assert jdc.server == "server1"
     assert jdc.driver == "driver1"
     assert jdc.database == "database1"
-
-
-if __name__ == "__main__":
-    import sys
-
-    sys.exit(pytest.main())

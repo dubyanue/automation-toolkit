@@ -77,9 +77,3 @@ def test_log_formatter_no_date_fmt(capsys: pytest.CaptureFixture[str]) -> None:
         rf"\d+::{logger_name}::{log_msg}"
     )
     assert re.match(matchstr, captured.out.strip())
-
-
-if __name__ == "__main__":
-    import sys
-
-    sys.exit(pytest.main())

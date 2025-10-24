@@ -113,9 +113,3 @@ def test_readlines_allow_comments(common_file_factory_fixture_: FileFactory) -> 
         "}",
     ]
     assert file_f.readlines(allow_comments=True) == expected
-
-
-if __name__ == "__main__":
-    import sys
-
-    sys.exit(pytest.main())
