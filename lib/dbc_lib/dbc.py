@@ -183,6 +183,18 @@ class SQLite(PyODBC):
             FileFactory(filename) if isinstance(filename, str) else filename
         )
 
+    def __enter__(self) -> "SQLite":
+        self.connect()
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        self.disconnect(commit=exc_type is None)
+
     def connect(self, timeout: int = 1) -> DBConnection:
         if not self.cnxn or not self._connected:
             self.cnxn = sqlite3.connect(

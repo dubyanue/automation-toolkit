@@ -111,14 +111,14 @@ def test_sqlite_executemany(create_db_sqlite_db_fixture_: SQLite) -> None:
 
 
 def test_sqlite_backup(basic_sqlite_db_fixture_: SQLite) -> None:
-    sqlite: SQLite = basic_sqlite_db_fixture_
     sqlite2: SQLite = SQLite()
     query: str = dbc_utils.create_select_query(
         "Animes", dbc_utils.QueryKwargs(None, None, ["ORDER BY ID"])
     )
     assert not sqlite2.fetchall(query)
     if sqlite2.cnxn:
-        sqlite.backup(sqlite2.cnxn)
+        with basic_sqlite_db_fixture_ as sqlite:
+            sqlite.backup(sqlite2.cnxn)
 
     expected = [
         (1, "One Piece", 9.0),
@@ -136,23 +136,23 @@ def test_sqlite_backup(basic_sqlite_db_fixture_: SQLite) -> None:
 
 
 def test_mapped_fetchone(basic_pyodbc_db_fixture_: PyODBC) -> None:
-    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
     query: str = dbc_utils.create_select_query(
         "Animes",
         dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
     )
     expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
-    assert pyodbc_.fetchone(query, mapped=True) == expected
+    with basic_pyodbc_db_fixture_ as pyodbc_:
+        assert pyodbc_.fetchone(query, mapped=True) == expected
 
 
 def test_mapped_fetchmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
-    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
     query: str = dbc_utils.create_select_query(
         "Animes",
         dbc_utils.QueryKwargs(None, ["Name='One Piece'"], None),
     )
     expected: dict[str, str | float] = {"ID": 1, "Name": "One Piece", "Rating": 9}
-    assert pyodbc_.fetchmany(query, 1, mapped=True) == [expected]
+    with basic_pyodbc_db_fixture_ as pyodbc_:
+        assert pyodbc_.fetchmany(query, 1, mapped=True) == [expected]
 
 
 def test_pyodbc_connect_disconnect(basic_pyodbc_db_fixture_: PyODBC) -> None:
@@ -170,9 +170,11 @@ def test_pyodbc_connect_disconnect(basic_pyodbc_db_fixture_: PyODBC) -> None:
 
 
 def test_pyodbc_failed_executmany(basic_pyodbc_db_fixture_: PyODBC) -> None:
-    pyodbc_: PyODBC = basic_pyodbc_db_fixture_
     data: tuple[tuple[int, int], ...] = ((1, 2), (3, 4))
-    assert not (pyodbc_.executemany("INSERT INTO FAKE([ID], [Name]) VALUES(?,?)", data))
+    with basic_pyodbc_db_fixture_ as pyodbc_:
+        assert not (
+            pyodbc_.executemany("INSERT INTO FAKE([ID], [Name]) VALUES(?,?)", data)
+        )
 
 
 def test_sqlite_failed_executescript(basic_sqlite_db_fixture_: SQLite) -> None:

@@ -72,3 +72,11 @@ yamllint==1.37.1
 pylint-pydantic==0.3.5
 pre-commit==4.3.0
 bazel-runfiles==1.6.3
+nuitka==2.8.4
+ordered-set==4.1.0
+zstandard==0.25.0
+grpcio==1.76.0
+paramiko==4.0.0
+psutil==7.1.1
+protobuf==6.33.0
+xmltodict==1.0.2

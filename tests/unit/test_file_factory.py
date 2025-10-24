@@ -5,7 +5,10 @@ import pytest
 from lib.file_lib.file_factory import FileFactory
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import common_file_factory_fixture
+from lib.test_lib.test_fixures import (
+    common_file_factory_fixture,
+    temp_directory_fixture,
+)
 
 
 def test_basic_file_factory(common_file_factory_fixture_: FileFactory) -> None:
@@ -14,6 +17,8 @@ def test_basic_file_factory(common_file_factory_fixture_: FileFactory) -> None:
     assert file_f.is_file() is True
     assert isinstance(file_f, Path)
     assert file_f.exists() is True
+    assert file_f.size() == 0
+    assert file_f.modified_time() > 0
 
 
 def test_delete_create(common_file_factory_fixture_: FileFactory) -> None:
@@ -24,6 +29,18 @@ def test_delete_create(common_file_factory_fixture_: FileFactory) -> None:
     assert file_f.exists() is False
     assert file_f.create() is True
     assert file_f.exists() is True
+
+
+def test_file_factory_read_errors(temp_directory_fixture_: str) -> None:
+    dir_name: str = temp_directory_fixture_
+    fake_file: str = "/fake/fake_file.txt"
+    with pytest.raises(
+        IsADirectoryError, match=f"Expected file but, '{dir_name}' is a directory."
+    ):
+        FileFactory(dir_name).read()
+
+    with pytest.raises(FileNotFoundError, match=f"File: '{fake_file}' not found."):
+        FileFactory(fake_file).read()
 
 
 def test_read_write(common_file_factory_fixture_: FileFactory) -> None:

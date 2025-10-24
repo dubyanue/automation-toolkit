@@ -1,6 +1,6 @@
 from collections.abc import Generator
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, TemporaryDirectory
 from typing import TYPE_CHECKING, Any
 
 import pytest
@@ -55,6 +55,17 @@ def json_file_factory_fixture() -> Generator[tuple[FileFactory, str, dict[str, A
 
     if (file_path := Path(filename_)).exists():
         file_path.unlink(missing_ok=True)
+
+
+@pytest.fixture(name="temp_directory_fixture_")
+def temp_directory_fixture() -> Generator[str]:
+    dir_name: str
+    with TemporaryDirectory(delete=False) as tmp_dir:
+        dir_name = tmp_dir
+    yield dir_name
+
+    if Path(dir_name).exists():
+        Path(dir_name).rmdir()
 
 
 @pytest.fixture(name="json_database_config_fixture_")

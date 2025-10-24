@@ -36,7 +36,7 @@ class FileFactory(Path):
             exception_msg = f"File: '{self}' not found."
             raise FileNotFoundError(exception_msg)
         data: str = ""
-        with self.open(mode="r", encoding=encoding) as fh:
+        with self._open(mode="r", encoding=encoding) as fh:
             if not allow_comments:
                 for line in fh:
                     data += re.sub(COMMENTRE, "", line)
@@ -64,12 +64,7 @@ class FileFactory(Path):
         return lines
 
     @contextmanager
-    def _open(
-        self, mode: str = "r", create_mode: int = 0o777, encoding: str = "utf-8"
-    ) -> Generator[IO[Any]]:
-        if not self.exists():
-            self.create(create_mode)
-
+    def _open(self, mode: str = "r", encoding: str = "utf-8") -> Generator[IO[Any]]:
         with self.open(mode=mode, encoding=encoding) as file_handle:
             self.is_open = True
             yield file_handle

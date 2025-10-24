@@ -21,6 +21,18 @@ def test_json_read(
     assert json_read(file_f) == test_dict
 
 
+def test_json_read_from_filename_str(
+    json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
+) -> None:
+    test_json: str
+    test_dict: dict[str, Any]
+    file_f: FileFactory
+    file_f, test_json, test_dict = json_file_factory_fixture_
+    with file_f._open("w") as fh:
+        fh.write(test_json)
+    assert json_read(str(file_f)) == test_dict
+
+
 def test_json_read_with_comments(
     json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
 ) -> None:
@@ -44,6 +56,17 @@ def test_json_write(
     file_f: FileFactory
     file_f, test_json, test_dict = json_file_factory_fixture_
     json_write(test_dict, file_f, None, sort_keys=False)
+    assert file_f.read() == test_json
+
+
+def test_json_write_to_filename_str(
+    json_file_factory_fixture_: tuple[FileFactory, str, dict[str, Any]],
+) -> None:
+    test_json: str
+    test_dict: dict[str, Any]
+    file_f: FileFactory
+    file_f, test_json, test_dict = json_file_factory_fixture_
+    json_write(test_dict, str(file_f), None, sort_keys=False)
     assert file_f.read() == test_json
 
 
