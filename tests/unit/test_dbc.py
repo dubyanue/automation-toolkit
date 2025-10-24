@@ -4,7 +4,7 @@ from lib.dbc_lib import dbc_utils
 from lib.dbc_lib.dbc import DBConnection, PyODBC, SQLite
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import (
+from tests.test_fixtures import (
     basic_pyodbc_db_fixture,
     basic_sqlite_db_fixture,
     create_db_sqlite_db_fixture,

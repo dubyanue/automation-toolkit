@@ -7,7 +7,7 @@ from lib.file_lib.file_factory import FileFactory
 from lib.logger_lib.logger import get_logger
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import (
+from tests.test_fixtures import (
     common_file_factory_fixture,
     json_database_config_fixture,
     json_file_factory_fixture,

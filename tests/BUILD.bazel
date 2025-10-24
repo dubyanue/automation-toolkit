@@ -1,6 +1,18 @@
+load("@rules_python//python:defs.bzl", "py_library")
 load("//macros:pytest_macros.bzl", "custom_py_test")
 
 package(default_visibility = ["//visibility:public"])
+
+py_library(
+    name = "lib_test_fixtures",
+    srcs = [
+        "test_fixtures.py",
+        "//lib:libs",
+    ],
+    deps = [
+        "//:py_test_deps",
+    ],
+)
 
 filegroup(
     name = "unittest_files",
@@ -10,18 +22,6 @@ filegroup(
             "unit/test_*.py",
         ],
         allow_empty = True,
-    ),
-)
-
-filegroup(
-    name = "non_unittest_files",
-    srcs = glob(
-        include = [
-            "**/*_test.py",
-            "**/test_*.py",
-        ],
-        allow_empty = True,
-        exclude = ["unit/**"],
     ),
 )
 
@@ -38,7 +38,6 @@ filegroup(
 filegroup(
     name = "test_files",
     srcs = [
-        ":non_unittest_files",
         ":test_data",
         ":unittest_files",
     ],
@@ -48,9 +47,10 @@ custom_py_test(
     name = "unit_tests",
     srcs = [
         ":unittest_files",
-        "//lib:libs",
     ],
     data = [":test_data"],
     tags = ["unit"],
-    deps = ["//:misc_deps"],
+    deps = [
+        ":lib_test_fixtures",
+    ],
 )

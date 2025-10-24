@@ -8,6 +8,5 @@ filegroup(
         "//lib/dbc_lib",
         "//lib/file_lib",
         "//lib/logger_lib",
-        "//lib/test_lib",
     ],
 )

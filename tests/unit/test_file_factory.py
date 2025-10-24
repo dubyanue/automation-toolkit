@@ -5,10 +5,7 @@ import pytest
 from lib.file_lib.file_factory import FileFactory
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import (
-    common_file_factory_fixture,
-    temp_directory_fixture,
-)
+from tests.test_fixtures import common_file_factory_fixture, temp_directory_fixture
 
 
 def test_basic_file_factory(common_file_factory_fixture_: FileFactory) -> None:
@@ -41,6 +38,18 @@ def test_file_factory_read_errors(temp_directory_fixture_: str) -> None:
 
     with pytest.raises(FileNotFoundError, match=f"File: '{fake_file}' not found."):
         FileFactory(fake_file).read()
+
+
+def test_file_factory_readlines_errors(temp_directory_fixture_: str) -> None:
+    dir_name: str = temp_directory_fixture_
+    fake_file: str = "/fake/fake_file.txt"
+    with pytest.raises(
+        IsADirectoryError, match=f"Expected file but, '{dir_name}' is a directory."
+    ):
+        FileFactory(dir_name).readlines()
+
+    with pytest.raises(FileNotFoundError, match=f"File: '{fake_file}' not found."):
+        FileFactory(fake_file).readlines()
 
 
 def test_read_write(common_file_factory_fixture_: FileFactory) -> None:
@@ -97,8 +106,13 @@ def test_readlines_allow_comments(common_file_factory_fixture_: FileFactory) -> 
     with file_f._open("w") as fh:
         fh.write('{"test": "yes",\n"test2": "no",\n// "test3": "commented"\n}')
 
-    expected: list[str] = ['{"test": "yes",\n', '"test2": "no",\n', "\n", "}"]
-    assert file_f.readlines(allow_comments=False) == expected
+    expected: list[str] = [
+        '{"test": "yes",\n',
+        '"test2": "no",\n',
+        '// "test3": "commented"\n',
+        "}",
+    ]
+    assert file_f.readlines(allow_comments=True) == expected
 
 
 if __name__ == "__main__":

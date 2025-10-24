@@ -197,8 +197,7 @@ py_console_script_binary(
     binary_rule = py_binary,
     pkg = "@my_deps//mypy:pkg",
     deps = [
-        ":misc_deps",
-        ":py_test_deps",
+        "//tests:lib_test_fixtures",
     ],
 )
 

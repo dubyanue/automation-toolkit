@@ -4,7 +4,7 @@ from lib.config_lib.config import JsonDatabaseConfiguration
 from lib.dbc_lib import dbc_utils
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import (
+from tests.test_fixtures import (
     basic_dbc_criteria_fixture,
     json_database_config_fixture,
 )

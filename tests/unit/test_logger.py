@@ -10,7 +10,7 @@ from lib.file_lib.file_factory import FileFactory
 from lib.logger_lib import log_formatter, logger
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import common_file_factory_fixture
+from tests.test_fixtures import common_file_factory_fixture
 
 
 def test_basic_logger(common_file_factory_fixture_: FileFactory) -> None:

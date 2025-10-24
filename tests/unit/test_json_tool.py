@@ -6,7 +6,7 @@ from lib.file_lib.file_factory import FileFactory
 from lib.file_lib.json_tool import json_read, json_write
 
 # pylint: disable-next=unused-import
-from lib.test_lib.test_fixures import json_file_factory_fixture
+from tests.test_fixtures import json_file_factory_fixture
 
 
 def test_json_read(
