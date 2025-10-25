@@ -12,5 +12,6 @@ py_library(
     deps = [
         "//:core_deps",
         "//data:proto_py_pb2",
+        "//data:py_proto_lib",
     ],
 )

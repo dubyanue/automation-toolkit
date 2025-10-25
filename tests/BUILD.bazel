@@ -50,7 +50,6 @@ custom_py_test(
     ],
     data = [
         ":test_data",
-        "//data:generated_protos",
     ],
     tags = ["unit"],
     deps = [
