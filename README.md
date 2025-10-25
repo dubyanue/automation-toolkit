@@ -20,3 +20,6 @@ https://github.com/grpc/grpc/blob/master/bazel/python_rules.bzl
 https://registry.bazel.build/modules/protobuf
 https://github.com/protocolbuffers/protobuf/blob/main/bazel/proto_library.bzl
 https://github.com/protocolbuffers/protobuf/blob/main/bazel/py_proto_library.bzl
+
+
+https://docs.pydantic.dev/latest/api/base_model/
