@@ -1,0 +1,45 @@
+load("@grpc//bazel:python_rules.bzl", "py_grpc_library")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
+load("@protobuf//bazel:py_proto_library.bzl", "py_proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "proto_lib",
+    srcs = glob(
+        include = [
+            "proto/*.proto",
+        ],
+    ),
+    deps = [
+        "@protobuf//:timestamp_proto",
+    ],
+)
+
+py_proto_library(
+    name = "proto_py_pb2",
+    deps = [
+        ":proto_lib",
+    ],
+)
+
+py_grpc_library(
+    name = "proto_py_grpc",
+    srcs = [
+        ":proto_lib",
+    ],
+    grpc_library = "//:core_deps",
+    deps = [
+        ":proto_py_pb2",
+    ],
+)
+
+filegroup(
+    name = "generated_protos",
+    srcs = glob(
+        include = [
+            "proto/*_pb2.py",
+            "proto/*_pb2.pyi",
+        ],
+    ),
+)

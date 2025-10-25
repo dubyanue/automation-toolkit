@@ -14,7 +14,7 @@ def test_json_read(
     test_dict: dict[str, Any]
     file_f: FileFactory
     file_f, test_json, test_dict = json_file_factory_fixture_
-    with file_f._open("w") as fh:
+    with file_f.open_("w") as fh:
         fh.write(test_json)
     assert json_read(file_f) == test_dict
 
@@ -26,7 +26,7 @@ def test_json_read_from_filename_str(
     test_dict: dict[str, Any]
     file_f: FileFactory
     file_f, test_json, test_dict = json_file_factory_fixture_
-    with file_f._open("w") as fh:
+    with file_f.open_("w") as fh:
         fh.write(test_json)
     assert json_read(str(file_f)) == test_dict
 
@@ -41,7 +41,7 @@ def test_json_read_with_comments(
     test_json = test_json.replace(
         r'"key2":1,"key3":true}', '// This is a comment\n"key2":1,"key3":true}'
     )
-    with file_f._open("w") as fh:
+    with file_f.open_("w") as fh:
         fh.write(test_json)
     assert json_read(file_f) == test_dict
 

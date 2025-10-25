@@ -28,7 +28,7 @@ repos:
         verbose: true
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.14.1
+    rev: v0.14.2
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -47,23 +47,27 @@ repos:
       - id: mypy
         types_or: [python, pyi]
         verbose: true
+        exclude: '.*_pb2(?:_grpc)?\.(py|pyi)$'
         additional_dependencies:
           - "types-pytz"
           - "pyodbc"
           - "pydantic"
           - "pytest"
           - "bazel-runfiles"
-        args: ["--config-file=pyproject.toml"]
+        args:
+          - --config-file=pyproject.toml
   - repo: https://github.com/pylint-dev/pylint
     rev: 'v4.0.2'
     hooks:
       - id: pylint
         types_or: [python, pyi]
         verbose: true
+        language_version: python3.12
         additional_dependencies:
           - pylint-plugin-utils
           - pylint-pytest
           - pylint-pydantic
+          - pylint_protobuf
   - repo: local
     # Build validation - run Bazel build before commit
     hooks:

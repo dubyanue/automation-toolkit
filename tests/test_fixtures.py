@@ -128,7 +128,7 @@ def create_db_sqlite_db_fixture() -> Generator[SQLite]:
         if r
         else sql_file
     )
-    with db_file_path._open("r") as fh:
+    with db_file_path.open_("r") as fh:
         sqlite.executescript(fh.read())
 
     yield sqlite

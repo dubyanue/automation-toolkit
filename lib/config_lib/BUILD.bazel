@@ -10,7 +10,7 @@ py_library(
         exclude = ["main.py"],
     ),
     deps = [
-        "//:misc_deps",
+        "//:core_deps",
         "//lib/file_lib",
         "//lib/logger_lib",
     ],

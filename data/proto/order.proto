@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package data.proto;
+
+import "google/protobuf/timestamp.proto";
+import "data/proto/defs.proto";
+
+message Order {
+    int32 orderId = 1;
+    string symbol = 2;
+    Side side = 3;
+    optional float price = 4;
+    float quantity = 5;
+    OrderType orderType = 6;
+    optional Session session = 7;
+    Duration duration = 8;
+    optional google.protobuf.Timestamp enteredTime = 9;
+    Status status = 10;
+    bool simExchange = 11;
+    optional float filledQuantity = 12;
+    string clordId = 13;
+    optional int32 orderVersionNum = 14;
+    int32 origorderId = 15;
+    int32 rootorderId = 16;
+    string origclordId = 17;
+    string rootclordId = 18;
+    optional OrderStrategyType orderStrategyType = 19;
+    optional SpecialInstruction specialInstruction = 20;
+    optional float bidpx = 21;
+    optional float askpx = 22;
+    optional string sendersubId = 23;
+    optional int32 accountNumber = 24;
+    optional float stopPrice = 25;
+    optional RequestedDestination requestedDestination = 26;
+    bool cancelable = 27;
+    bool editable = 28;
+    optional Marketability arrivalMarketability = 29;
+}

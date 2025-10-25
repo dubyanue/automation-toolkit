@@ -187,6 +187,7 @@ sh_test(
         "//:ruff_bin",
         "//:taplo_bin",
         "//:yamllint",
+        "//data:generated_protos",
         "//lib:libs",
     ],
     deps = [

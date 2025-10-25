@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package data.proto;
+
+enum SymbolInfoStatus {
+    INVALID_SYMBOL_INFO_STATUS = 0;
+    ADD = 1 ;
+    REMOVE = 2;
+    UPDATE = 3;
+}
+
+enum Side {
+    INVALID_SIDE = 0;
+    BUY = 1;
+    SELL = 2;
+}
+
+enum OrderType {
+    option allow_alias = true;
+    INVALID_ORDERTPYE = 0;
+    MARKET = 1;
+    LIMIT = 2;
+    STOP = 3;
+    STOP_LIMIT = 4;
+    STOPLIMIT = 4;
+}
+
+enum Session {
+    NORMAL = 0;
+    AM = 1;
+    PM = 2;
+    SEAMLESS = 3;
+}
+
+enum Duration {
+    option allow_alias = true;
+    INVALID_DURATION = 0;
+    DAY = 1;
+    GTC = 2;
+    GOOD_TILL_CANCEL = 2;
+    FILL_OR_KILL = 3;
+    FOK = 3;
+}
+
+enum Status {
+    INVALID_STATUS = 0;
+    QUEUED = 1;
+    WORKING = 2;
+    FILLED = 3;
+    PENDING_CANCEL = 4;
+    CANCELED = 5;
+    PENDING_REPLACE = 6;
+    REPLACED = 7;
+    REPLACE_REJECT = 8;
+    INTERNAL_REJECT = 9;
+    CANCEL_REJECT = 10;
+    REJECT = 11;
+    REJECTED = 12;
+    PENDING_ACTIVATION = 13;
+    AWAITING_UR_OUT = 14;
+    PARTIAL_FILLED = 15;
+    REINSTATE = 16;
+    AWAITING_PARENT_ORDER = 17;
+    AWAITING_CONDITION = 18;
+    AWAITING_MANUAL_REVIEW = 19;
+    ACCEPTED = 20;
+    EXPIRED = 21;
+}
+
+enum OrderStrategyType {
+    SINGLE = 0;
+    OCO = 1;
+    TRIGGER = 2;
+}
+
+enum SpecialInstruction {
+    option allow_alias = true;
+    NO_SPECIAL_INSTRUCTION = 0;
+    AON = 1;
+    ALL_OR_NONE = 1;
+    DNR = 2;
+    DO_NOT_REDUCE = 2;
+    AON_DNR = 3;
+    ALL_OR_NONE_DO_NOT_REDUCE = 3;
+}
+
+enum RequestedDestination {
+    option allow_alias = true;
+    NO_REQUESTED_DESTINATION = 0;
+    INET = 1;
+    ARCA = 2;
+    ECN_ARCA = 2;
+    CBOE = 3;
+    AMEX = 4;
+    PHLX = 5;
+    ISE = 6;
+    BOX = 7;
+    NYSE = 8;
+    NASDAQ = 9;
+    BATS = 10;
+    C2 = 11;
+    AUTO = 12;
+    SIMEX = 13;
+    PINK_SHEET = 14;
+    PACIFIC = 15;
+    OTCBB = 16;
+}
+
+enum Marketability {
+    NON_MARKETABLE = 0;
+    MARKETABLE = 1;
+}

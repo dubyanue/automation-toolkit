@@ -48,7 +48,10 @@ custom_py_test(
     srcs = [
         ":unittest_files",
     ],
-    data = [":test_data"],
+    data = [
+        ":test_data",
+        "//data:generated_protos",
+    ],
     tags = ["unit"],
     deps = [
         ":lib_test_fixtures",

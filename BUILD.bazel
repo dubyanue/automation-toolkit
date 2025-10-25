@@ -10,6 +10,7 @@ exports_files(
         ".gitignore",
         "MODULE.bazel",
         ".coveragerc",
+        "pyproject.toml",
     ] + glob(
         include = [
             "scripts/**",
@@ -48,7 +49,7 @@ filegroup(
 )
 
 py_library(
-    name = "misc_deps",
+    name = "core_deps",
     deps = [
         "@rules_python//python/runfiles",
     ] + [
@@ -80,14 +81,20 @@ py_library(
             "pyodbc",
             "pesq",
             "einops",
+            "astroid",
+            "dill",
             "cached_property",
             "pb_bss_eval",
             "pylint",
+            "pydantic_core",
             "pydantic",
             "pylint_plugin_utils",
             "pylint_pytest",
             "pylint_pydantic",
+            "pylint_protobuf",
             "bazel_runfiles",
+            "grpcio",
+            "types_protobuf",
         ]
     ],
 )
@@ -96,7 +103,7 @@ py_library(
     name = "py_test_deps",
     srcs = [],
     deps = [
-        ":misc_deps",
+        ":core_deps",
     ] + [
         "@my_deps//{}".format(f)
         for f in [
@@ -104,6 +111,7 @@ py_library(
             "pytest_ruff",
             "pytest_cov",
             "pytest_html",
+            "pytest_pylint",
             "pytest_html_merger",
             "pytest_metadata",
             "pytest_mypy",
@@ -179,7 +187,8 @@ py_console_script_binary(
     ],
     pkg = "@my_deps//pylint:pkg",
     deps = [
-        ":misc_deps",
+        ":core_deps",
+        "//data:proto_py_pb2",
     ],
 )
 
@@ -188,7 +197,7 @@ py_console_script_binary(
     binary_rule = py_binary,
     pkg = "@my_deps//yamllint:pkg",
     deps = [
-        ":misc_deps",
+        ":core_deps",
     ],
 )
 
@@ -197,6 +206,7 @@ py_console_script_binary(
     binary_rule = py_binary,
     pkg = "@my_deps//mypy:pkg",
     deps = [
+        "//data:proto_py_pb2",
         "//tests:lib_test_fixtures",
     ],
 )

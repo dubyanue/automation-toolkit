@@ -10,6 +10,7 @@ py_library(
         exclude = ["main.py"],
     ),
     deps = [
-        "//:misc_deps",
+        "//:core_deps",
+        "//data:proto_py_pb2",
     ],
 )

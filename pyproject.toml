@@ -105,16 +105,19 @@ fixable = ["ALL"]
 
 [tool.ruff.lint.isort]
 # Ensure consistent import sorting
-known-first-party = ["lib", "tests"]
+known-first-party = ["lib", "tests", "data"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/*_pb2.py" = ["ALL"]
 "**/*_pb2_grpc.py" = ["ALL"]
 "**/{*_test,test_*}.py" = ["F401", "S101", "RET504", "S608", "S105"]
+"**/data_lib/**" = ["N815"]
+"**/data/proto/**" = ["UP045", "UP007", "N803", "N815", "EXE002"]
 
 [tool.pylint.main]
 ignore-paths = [
   ".*_pb2(_grpc)*[.]py$",
+  ".*_pb2(_grpc)*[.]pyi$",
   ".*/bazel-.*",
   ".*/.venv/.*",
   ".*/build/.*",
@@ -123,14 +126,14 @@ ignore-paths = [
   ".*/__pycache__/.*",
   ".*/rules_python_entry_point_.*[.]py$", # Exclude generated entry point files
   ".claude/.*",
+  # ".*/data/proto/.*",
+  "lib/data_lib/data_models.py",
 ]
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-# extension-pkg-allow-list = ["pytest", "pydantic"]
-# load-plugins = ["pylint_pytest", "pylint_pydantic"]
-extension-pkg-allow-list = ["pytest"]
-load-plugins = ["pylint_pytest"]
+extension-pkg-allow-list = ["pytest", "protobuf"]
+load-plugins = ["pylint_pytest", "pylint_protobuf"]
 
 # Add files or directories matching the regular expressions patterns to the
 # ignore-list. The regex matches against paths and can be in Posix or Windows
@@ -139,7 +142,7 @@ load-plugins = ["pylint_pytest"]
 
 # Minimum Python version to use for version dependent checks. Will default to the
 # version used to run pylint.
-py-version = "3.11"
+py-version = "3.12"
 
 # Naming style matching correct class constant names.
 class-const-naming-style = "UPPER_CASE"
@@ -266,7 +269,7 @@ enable = [
 [tool.mypy]
 python_version = "3.12"
 exclude = [
-  '.*_pb2(?:_grpc)?\.py$',
+  '.*_pb2(?:_grpc)?\.(py|pyi)$',
   '.*.runfiles.*',
   'bazel-.*',
   '.cache.*',

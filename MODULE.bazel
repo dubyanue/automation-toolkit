@@ -8,6 +8,8 @@ bazel_dep(name = "rules_python", version = "1.6.3")
 bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2")
 bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "protobuf", version = "33.0")
+bazel_dep(name = "grpc", version = "1.74.1")
 
 # NOTE PYTHON
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
